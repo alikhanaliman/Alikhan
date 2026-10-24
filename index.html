@@ -1,0 +1,4200 @@
+<!doctype html>
+<html lang="kk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PhysiX</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f4f6fa;--card:#ffffff;--line:#e2e8f0;--text:#1e293b;--muted:#64748b;--a:#4f46e5;--b:#0d9488}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Inter', system-ui, -apple-system, sans-serif;background:var(--bg);color:var(--text)}
+button,input{font:inherit;font-family:'Inter', system-ui, -apple-system, sans-serif}.wrap{max-width:1120px;margin:auto;padding:0 22px}.top{position:sticky;top:0;z-index:5;background:#ffffffcc;backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.top .wrap{height:70px;display:flex;align-items:center;justify-content:space-between}.brand{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:800;color:var(--text)}.logo{width:34px;height:34px;border-radius:11px;background:linear-gradient(135deg,var(--a),var(--b));display:grid;place-items:center;color:#fff}
+nav{display:flex;gap:6px}nav button,.ghost{border:0;background:transparent;color:var(--muted);padding:10px 13px;border-radius:10px;cursor:pointer}nav button.active{background:#e0e7ff;color:var(--a);font-weight:700}
+.user{border:1px solid var(--line);background:#ffffff;color:var(--text);padding:9px 13px;border-radius:999px;cursor:pointer;font-weight:600}
+.page{display:none;padding:48px 0 80px}.page.active{display:block}.hero{min-height:65vh;display:grid;grid-template-columns:1.15fr .85fr;gap:44px;align-items:center}
+.tag{color:var(--b);font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase}.hero h1,.title h1{font-size:clamp(44px,7vw,78px);line-height:.98;letter-spacing:-.05em;margin:12px 0 22px;color:var(--text)}.hero h1 span{background:linear-gradient(90deg,var(--a),var(--b));-webkit-background-clip:text;color:transparent}
+.hero p,.title p,.card p{color:var(--muted);line-height:1.65}.actions{display:flex;gap:12px;margin:28px 0}.primary,.secondary{border:0;padding:13px 18px;border-radius:12px;font-weight:800;cursor:pointer}.primary{background:linear-gradient(135deg,var(--a),#6366f1);color:white}.secondary{background:#f1f5f9;color:var(--text);border:1px solid var(--line)}
+.demo{background:linear-gradient(180deg,#ffffff,#f8fafc);border:1px solid var(--line);border-radius:24px;padding:22px;box-shadow:0 10px 30px rgba(0,0,0,0.05)}.demo h3{font-size:25px;margin:20px 0 6px;color:var(--text)}.small{font-size:13px;color:var(--muted)}.bar{height:9px;background:#e2e8f0;border-radius:999px;overflow:hidden;margin:9px 0 18px}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--a),var(--b))}
+
+.grid-container{display:flex;flex-wrap:wrap;gap:20px;justify-content:center}
+.card-item{background:var(--card);border:1px solid var(--line);border-radius:19px;padding:20px;box-shadow:0 4px 20px rgba(0,0,0,0.03);width:calc(33.333% - 14px);min-width:280px;max-width:350px;display:flex;flex-direction:column;justify-content:space-between}
+
+.course-top{display:flex;justify-content:space-between;align-items:center}.ico{width:52px;height:52px;border-radius:15px;display:grid;place-items:center;font-weight:900;color:white}.py{background:#3d5afe}.mol{background:#0d9488}.elec{background:#f97316}.opt{background:#9333ea}.quant{background:#0284c7}.mech{background:#eab308;color:#1e293b}.pill{font-size:11px;color:var(--muted);border:1px solid var(--line);padding:5px 8px;border-radius:999px;background:#f8fafc}.card-item h3{font-size:22px;margin:18px 0 8px;color:var(--text)}.course-meta{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
+.title{margin-bottom:30px}.title h1{font-size:54px;color:var(--text)}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:18px}.stat{background:var(--card);border:1px solid var(--line);border-radius:19px;padding:22px;box-shadow:0 4px 20px rgba(0,0,0,0.03)}.stat strong{display:block;font-size:34px;margin-top:10px;color:var(--text)}.list{display:grid;gap:12px}.row{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;display:grid;grid-template-columns:1fr auto;gap:15px;align-items:center;box-shadow:0 4px 15px rgba(0,0,0,0.02)}
+.field{width:100%;padding:13px;border-radius:11px;border:1px solid var(--line);background:#f8fafc;color:var(--text);margin:6px 0 14px}
+.modal{position:fixed;inset:0;background:rgba(15,23,42,0.4);backdrop-filter:blur(4px);display:grid;place-items:center;padding:20px;z-index:20}.hidden{display:none}.modal-card{width:min(450px,100%);background:#ffffff;border:1px solid var(--line);border-radius:22px;padding:26px;position:relative;box-shadow:0 20px 40px rgba(0,0,0,0.1)}.x{position:absolute;right:15px;top:12px;border:1px solid var(--line);background:#f1f5f9;color:var(--text);border-radius:50%;width:34px;height:34px;cursor:pointer}
+.toast{position:fixed;left:50%;bottom:25px;transform:translateX(-50%);background:#1e293b;color:#ffffff;padding:10px 20px;border-radius:999px;font-weight:800;opacity:0;transition:.2s;z-index:30;box-shadow:0 10px 20px rgba(0,0,0,0.1)}.toast.show{opacity:1}
+footer{border-top:1px solid var(--line);color:var(--muted);padding:25px 0 40px;font-size:13px}
+@media(max-width:900px){.card-item{width:calc(50% - 10px)}}
+@media(max-width:600px){nav{display:none}.hero{grid-template-columns:1fr}.card-item,.stats{width:100%}.title h1{font-size:42px}.row{grid-template-columns:1fr}.demo{margin-top:8px}}
+.lesson-article { display:grid; gap:18px; max-width:1000px; margin:0 auto; }
+.lesson-intro { padding:28px; border-radius:22px; color:#fff; background:radial-gradient(circle at top right,#4f46e5 0,#1e3a8a 38%,#0f172a 100%); box-shadow:0 16px 40px rgba(15,23,42,.18); }
+.lesson-intro h2 { color:#fff; font-size:clamp(25px,3vw,34px); margin:10px 0; line-height:1.25; }
+.lesson-intro p { color:#e2e8f0; line-height:1.85; margin-bottom:0; }
+.lesson-eyebrow { font-size:11px; font-weight:800; letter-spacing:1.6px; color:#6366f1; }
+.lesson-intro .lesson-eyebrow { color:#c7d2fe; }
+.lesson-section { background:var(--card,#fff); border:1px solid var(--border,#e2e8f0); border-radius:18px; padding:clamp(16px,3vw,25px); margin-bottom:0; box-shadow:0 5px 18px rgba(15,23,42,.035); }
+.lesson-section h2 { margin:0 0 12px; font-size:20px; color:var(--text,#172033); }
+.lesson-section p,.lesson-section li { line-height:1.85; color:var(--text,#334155); }
+.history-section { border-left:4px solid #a78bfa; }
+.formula-section { border-left:4px solid #60a5fa; }
+.example-section { border-left:4px solid #34d399; }
+.formula-box { background:linear-gradient(135deg,#eff6ff,#eef2ff); color:#1d4ed8!important; padding:18px; border-radius:13px; font-size:17px; font-weight:700; white-space:pre-line; line-height:1.8; }
+.solution-steps { display:grid; grid-template-columns:repeat(auto-fit,minmax(145px,1fr)); gap:8px; margin-top:15px; }
+.solution-steps span { background:#f1f5f9; padding:12px; border-radius:10px; font-size:13px; color:#334155; font-weight:700; }
+.video-frame { width:100%; aspect-ratio:16/9; background:#0f172a; border-radius:15px; overflow:hidden; margin-top:15px; }
+.video-frame iframe { width:100%; height:100%; border:0; display:block; }
+.quiz-section { background:linear-gradient(180deg,#fff,#f8fafc); border-color:#c7d2fe; }
+.quiz-heading { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; margin-bottom:18px; }
+.quiz-heading h2 { margin-top:7px; }
+.quiz-heading p { margin-bottom:0; }
+.quiz-count { white-space:nowrap; background:#e0e7ff; color:#3730a3; padding:8px 12px; border-radius:999px; font-size:12px; font-weight:800; }
+.quiz-question { min-width:0; border:1px solid #e2e8f0; border-radius:13px; padding:15px; margin:0 0 13px; background:#fff; }
+.quiz-question legend { padding:0 5px; font-weight:750; color:#1e293b; line-height:1.6; }
+.quiz-option { display:flex; align-items:flex-start; gap:10px; padding:10px; border-radius:9px; line-height:1.6; cursor:pointer; color:#334155; }
+.quiz-option:hover { background:#f1f5f9; }
+.quiz-option input { margin-top:5px; accent-color:#4f46e5; flex-shrink:0; }
+.quiz-submit { margin-top:6px; width:100%; padding:14px; border-radius:12px; font-weight:800; }
+.previous-score { background:#eef2ff; color:#3730a3; padding:12px 14px; border-radius:10px; margin-bottom:15px; }
+.quiz-result { display:none; margin-top:15px; padding:16px; border-radius:12px; }
+.quiz-result.show { display:block; }
+.result-good { background:#dcfce7; color:#166534; }
+.result-review { background:#fef3c7; color:#92400e; }
+.quiz-result p { margin-bottom:12px; }
+.progress-course-card { background:var(--card,#fff); border:1px solid var(--border,#e2e8f0); border-radius:15px; padding:17px; margin-bottom:12px; }
+.progress-course-head { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.progress-test-summary { margin-top:10px; }
+.progress-tests { margin-top:22px; padding:20px; border:1px solid var(--border,#e2e8f0); border-radius:18px; background:var(--card,#fff); }
+.progress-tests h3 { margin-top:0; }
+.progress-test-row { display:flex; justify-content:space-between; align-items:center; gap:12px; padding:13px 0; border-bottom:1px solid #e2e8f0; }
+.progress-test-row:last-child { border-bottom:0; }
+.score-pill { display:flex; align-items:center; gap:7px; padding:8px 11px; border-radius:10px; font-weight:800; white-space:nowrap; }
+.score-pill small { font-weight:600; }
+.score-good { background:#dcfce7; color:#166534; }
+.score-low { background:#fef3c7; color:#92400e; }
+@media(max-width:600px) {
+  .lesson-intro { padding:21px; }
+  .lesson-section { border-radius:14px; }
+  .quiz-heading { flex-direction:column; }
+  .progress-test-row { align-items:flex-start; }
+}
+#formulas { --f-ink:#172033; --f-muted:#65728a; --f-line:#e3e9f2; --f-blue:#4357d6; color:var(--f-ink); }
+#formulas .formula-hero { padding:clamp(22px,4vw,42px); border-radius:24px; color:#fff; background:radial-gradient(circle at 85% 15%,rgba(126,145,255,.45),transparent 30%),linear-gradient(130deg,#172554,#3548a8 58%,#596be4); box-shadow:0 16px 38px rgba(37,55,130,.18); }
+#formulas .formula-kicker { display:inline-block; margin-bottom:12px; font-size:11px; font-weight:800; letter-spacing:2px; opacity:.78; }
+#formulas .formula-hero h1 { margin:0 0 12px; font-size:clamp(26px,4vw,38px); line-height:1.15; }
+#formulas .formula-hero p { max-width:760px; margin:0; line-height:1.7; color:#e1e7ff; }
+#formulas .formula-search-wrap { display:flex; align-items:center; gap:10px; margin-top:24px; padding:8px 10px 8px 16px; max-width:800px; background:#fff; border:1px solid rgba(255,255,255,.45); border-radius:14px; color:#3548a8; }
+#formulas .formula-search-wrap input { min-width:0; flex:1; padding:9px 0; border:0; outline:0; color:#172033; background:transparent; font:inherit; }
+#formulas .formula-clear { padding:9px 12px; border:0; border-radius:9px; background:#eef1ff; color:#3548a8; cursor:pointer; font-weight:700; }
+#formulas .formula-tools { display:flex; flex-wrap:wrap; align-items:center; gap:12px; margin:22px 0 16px; }
+#formulas .formula-tools label { color:var(--f-muted); font-size:14px; font-weight:700; }
+#formulas .formula-tools select { max-width:100%; padding:11px 14px; border:1px solid var(--f-line); border-radius:11px; color:var(--f-ink); background:#fff; font:inherit; }
+#formulas .formula-count { margin-left:auto; color:var(--f-muted); font-size:13px; }
+#formulas .formula-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr)); gap:16px; }
+#formulas .formula-card { overflow:hidden; border:1px solid var(--f-line); border-radius:18px; background:#fff; box-shadow:0 5px 18px rgba(24,39,75,.045); transition:transform .18s ease,box-shadow .18s ease; }
+#formulas .formula-card:hover { transform:translateY(-3px); box-shadow:0 12px 28px rgba(24,39,75,.09); }
+#formulas .formula-card-head { padding:17px 18px 14px; border-bottom:1px solid #edf0f6; }
+#formulas .formula-topic { display:inline-block; padding:5px 9px; border-radius:999px; background:#eef1ff; color:#3548a8; font-size:11px; font-weight:800; }
+#formulas .formula-card h3 { margin:12px 0 0; font-size:17px; line-height:1.4; }
+#formulas .formula-equation { margin:16px 18px; padding:16px 12px; border-radius:13px; background:linear-gradient(135deg,#f4f6ff,#edf6ff); color:#263caa; text-align:center; font-size:clamp(22px,3vw,29px); font-weight:800; letter-spacing:.3px; overflow-wrap:anywhere; }
+#formulas .formula-card-body { padding:0 18px 18px; }
+#formulas .formula-card-body p { margin:0 0 13px; color:#526078; font-size:14px; line-height:1.65; }
+#formulas .formula-card-body h4 { margin:14px 0 7px; font-size:12px; color:#27344b; text-transform:uppercase; letter-spacing:.7px; }
+#formulas .formula-vars { display:flex; flex-wrap:wrap; gap:6px; }
+#formulas .formula-vars span { padding:5px 8px; border:1px solid #e7ebf3; border-radius:8px; background:#fafbfe; color:#48566f; font-size:12px; }
+#formulas .formula-empty { padding:35px 18px; text-align:center; border:1px dashed #cbd5e1; border-radius:16px; color:var(--f-muted); }
+#formulas .formula-empty strong { color:var(--f-ink); }
+@media(max-width:560px){ #formulas .formula-tools { align-items:stretch; } #formulas .formula-tools select { width:100%; } #formulas .formula-count { width:100%; margin-left:0; } #formulas .formula-search-wrap { padding-left:12px; } #formulas .formula-clear { padding:8px; } }
+#calculator {
+  padding: 30px 18px;
+  color: #172b4d;
+  font-family: Arial, sans-serif;
+}
+
+#calculator .calc-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+#calculator .calc-header {
+  padding: 30px;
+  margin-bottom: 24px;
+  border-radius: 22px;
+  color: white;
+  background: linear-gradient(135deg, #102b55, #1769aa);
+}
+
+#calculator .calc-label {
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: #9bd8ff;
+}
+
+#calculator .calc-header h1 {
+  margin: 12px 0;
+  font-size: clamp(26px, 4vw, 38px);
+}
+
+#calculator .calc-header p {
+  margin-bottom: 0;
+  line-height: 1.7;
+  color: #e1efff;
+}
+
+#calculator .calc-card {
+  padding: 28px;
+  border: 1px solid #dce6f2;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 10px 35px rgba(24, 61, 105, 0.08);
+}
+
+#calculator label {
+  display: block;
+  margin: 18px 0 8px;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+#calculator select,
+#calculator input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 13px 14px;
+  border: 1px solid #cbd8e8;
+  border-radius: 10px;
+  background: #f8fbff;
+  color: #172b4d;
+  font-size: 15px;
+  outline: none;
+}
+
+#calculator select:focus,
+#calculator input:focus {
+  border-color: #2785d8;
+  box-shadow: 0 0 0 3px rgba(39, 133, 216, 0.12);
+}
+
+#calculator .calc-formula-box {
+  margin: 24px 0;
+  padding: 20px;
+  border-radius: 14px;
+  background: #edf6ff;
+  border-left: 5px solid #2785d8;
+}
+
+#calculator .calc-formula-box span,
+#calculator .calc-result span {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: #46719b;
+}
+
+#calculator .calc-formula-box strong {
+  display: block;
+  font-size: 28px;
+  color: #135da1;
+}
+
+#calculator .calc-formula-box p {
+  margin-bottom: 0;
+  line-height: 1.6;
+  color: #526981;
+}
+
+#calculator .calc-inputs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 18px;
+}
+
+#calculator .calc-field label {
+  margin-top: 8px;
+}
+
+#calculator .calc-field small {
+  display: block;
+  margin-top: 5px;
+  color: #718198;
+}
+
+#calculator .calc-button,
+#calculator .calc-reset {
+  margin-top: 22px;
+  padding: 14px 20px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+#calculator .calc-button {
+  color: white;
+  background: #1769aa;
+}
+
+#calculator .calc-button:hover {
+  background: #10548b;
+}
+
+#calculator .calc-reset {
+  margin-left: 8px;
+  color: #24496f;
+  background: #eaf1f8;
+}
+
+#calculator .calc-result {
+  margin-top: 25px;
+  padding: 22px;
+  border-radius: 14px;
+  background: #f1f8f4;
+  border: 1px solid #d4eadc;
+}
+
+#calculator .calc-result h2 {
+  margin: 6px 0;
+  font-size: 30px;
+  color: #167346;
+  overflow-wrap: anywhere;
+}
+
+#calculator .calc-result p {
+  margin-bottom: 0;
+  line-height: 1.6;
+  color: #4b6657;
+}
+
+#calculator .calc-result.error {
+  background: #fff3f1;
+  border-color: #f1cfca;
+}
+
+#calculator .calc-result.error h2 {
+  color: #b42318;
+}
+
+#calculator .calc-note {
+  margin-top: 18px;
+  padding: 16px;
+  line-height: 1.7;
+  border-radius: 12px;
+  background: #f2f5fa;
+  color: #52647b;
+}
+
+@media (max-width: 600px) {
+  #calculator .calc-header,
+  #calculator .calc-card {
+    padding: 20px;
+  }
+
+  #calculator .calc-inputs {
+    grid-template-columns: 1fr;
+  }
+
+  #calculator .calc-reset {
+    margin-left: 0;
+  }
+}
+
+#problems {
+  padding: 28px 18px 50px;
+  color: #18304f;
+}
+
+#problems .problems-container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+#problems .problems-hero {
+  padding: 32px;
+  border-radius: 22px;
+  color: white;
+  background: linear-gradient(135deg, #102b55, #1769aa);
+  margin-bottom: 22px;
+}
+
+#problems .problems-hero > span {
+  color: #a7ddff;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+#problems .problems-hero h1 {
+  margin: 12px 0;
+  font-size: clamp(26px, 4vw, 38px);
+}
+
+#problems .problems-hero p {
+  line-height: 1.7;
+  color: #e2efff;
+}
+
+#problems .problems-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+#problems .problems-stats div {
+  min-width: 110px;
+  padding: 13px 18px;
+  border: 1px solid #ffffff38;
+  border-radius: 12px;
+  background: #ffffff12;
+}
+
+#problems .problems-stats strong,
+#problems .problems-stats small {
+  display: block;
+}
+
+#problems .problems-stats strong {
+  font-size: 25px;
+}
+
+#problems .problems-stats small {
+  margin-top: 4px;
+  color: #d7eaff;
+}
+
+#problems .problems-filter {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+#problems .problems-filter input,
+#problems .problems-filter select {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 14px;
+  border: 1px solid #d6e1ee;
+  border-radius: 11px;
+  background: white;
+  color: #18304f;
+  font-size: 14px;
+}
+
+#problems .problems-filter input:focus,
+#problems .problems-filter select:focus {
+  outline: 2px solid #a9d4ff;
+  border-color: #1769aa;
+}
+
+#problems .problem-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+#problems .problem-card {
+  min-width: 0;
+  padding: 22px;
+  border: 1px solid #dce6f2;
+  border-radius: 17px;
+  background: white;
+  box-shadow: 0 5px 18px #18304f0a;
+}
+
+#problems .problem-meta {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  color: #61758c;
+  font-size: 12px;
+}
+
+#problems .problem-card h3 {
+  margin: 15px 0 10px;
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+#problems .problem-card p {
+  color: #50647c;
+  line-height: 1.7;
+}
+
+#problems .problem-tag {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: #edf5ff;
+  color: #1769aa;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+#problems .problem-formula {
+  margin: 14px 0;
+  padding: 13px;
+  border-radius: 10px;
+  background: #f0f6fd;
+  color: #135da1;
+  font-weight: bold;
+}
+
+#problems .problem-answer {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+#problems .problem-answer input {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+  border: 1px solid #d6e1ee;
+  border-radius: 9px;
+}
+
+#problems .problem-check,
+#problems .problem-solution-btn {
+  padding: 11px 14px;
+  border: 0;
+  border-radius: 9px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#problems .problem-check {
+  color: white;
+  background: #1769aa;
+}
+
+#problems .problem-check:hover {
+  background: #10548b;
+}
+
+#problems .problem-solution-btn {
+  margin-top: 12px;
+  color: #1769aa;
+  background: #eaf3ff;
+}
+
+#problems .problem-feedback,
+#problems .problem-solution {
+  margin-top: 12px;
+  padding: 13px;
+  border-radius: 10px;
+  line-height: 1.7;
+  overflow-wrap: anywhere;
+}
+
+#problems .problem-feedback.correct {
+  color: #17663c;
+  background: #eaf8ef;
+}
+
+#problems .problem-feedback.incorrect {
+  color: #9b332b;
+  background: #fff0ee;
+}
+
+#problems .problem-solution {
+  border-left: 3px solid #1769aa;
+  background: #f5f8fc;
+}
+
+#problems .problem-solution[hidden] {
+  display: none;
+}
+
+#problems .problem-empty {
+  grid-column: 1 / -1;
+  padding: 35px;
+  border-radius: 14px;
+  text-align: center;
+  background: #f3f7fc;
+  color: #61758c;
+}
+
+@media (max-width: 760px) {
+  #problems .problems-filter,
+  #problems .problem-list {
+    grid-template-columns: 1fr;
+  }
+
+  #problems .problems-hero {
+    padding: 22px;
+  }
+
+  #problems .problem-card {
+    padding: 17px;
+  }
+}
+
+@media (max-width: 420px) {
+  #problems .problem-answer {
+    flex-direction: column;
+  }
+}
+/* ===== PROGRESS PAGE ===== */
+
+#progress {
+  padding: 28px 18px 50px;
+  color: #193451;
+}
+
+#progress .progress-container {
+  max-width: 1150px;
+  margin: 0 auto;
+}
+
+#progress .progress-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 34px;
+  border-radius: 24px;
+  color: white;
+  background: linear-gradient(135deg, #102b55, #1769aa);
+}
+
+#progress .progress-label {
+  color: #a7ddff;
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+#progress .progress-hero h1 {
+  margin: 12px 0;
+  font-size: clamp(27px, 4vw, 40px);
+}
+
+#progress .progress-hero p {
+  margin-bottom: 0;
+  line-height: 1.7;
+  color: #dcecff;
+}
+
+#progress .progress-hero-icon {
+  font-size: 58px;
+}
+
+#progress .progress-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin: 24px 0;
+}
+
+#progress .progress-stat-card {
+  padding: 22px;
+  border: 1px solid #e0e8f2;
+  border-radius: 18px;
+  background: white;
+  box-shadow: 0 5px 18px rgba(24, 61, 105, 0.05);
+}
+
+#progress .progress-stat-icon {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
+  font-size: 22px;
+}
+
+#progress .progress-stat-icon.blue {
+  background: #e5f1ff;
+}
+
+#progress .progress-stat-icon.green {
+  background: #e4f8ec;
+}
+
+#progress .progress-stat-icon.purple {
+  background: #f0e9ff;
+}
+
+#progress .progress-stat-icon.orange {
+  background: #fff0dd;
+}
+
+#progress .progress-stat-card p {
+  min-height: 38px;
+  margin: 17px 0 6px;
+  color: #61758c;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+#progress .progress-stat-card h2 {
+  margin: 0 0 7px;
+  font-size: 29px;
+  color: #183f6b;
+  overflow-wrap: anywhere;
+}
+
+#progress .progress-stat-card small {
+  color: #8a99aa;
+  font-size: 12px;
+}
+
+#progress .progress-panel {
+  margin-bottom: 28px;
+  padding: 27px;
+  border: 1px solid #e0e8f2;
+  border-radius: 20px;
+  background: white;
+  box-shadow: 0 5px 18px rgba(24, 61, 105, 0.04);
+}
+
+#progress .progress-panel-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+#progress .progress-panel h2,
+#progress .progress-section-heading h2 {
+  margin: 0 0 8px;
+  font-size: 21px;
+}
+
+#progress .progress-panel-heading p,
+#progress .progress-section-heading p {
+  margin: 0;
+  color: #7b8ca1;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+#progress .progress-panel-heading > strong {
+  color: #1769aa;
+  font-size: 32px;
+}
+
+#progress .progress-track,
+#progress .course-track {
+  height: 11px;
+  overflow: hidden;
+  border-radius: 20px;
+  background: #eaf0f7;
+}
+
+#progress .progress-track {
+  margin-top: 23px;
+}
+
+#progress .progress-fill {
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #2785d8, #54b7f5);
+  transition: width 0.5s ease;
+}
+
+#progress .progress-message {
+  margin: 15px 0 0;
+  color: #61758c;
+  font-size: 14px;
+}
+
+#progress .progress-section-heading {
+  margin: 30px 0 18px;
+}
+
+#progress .progress-courses {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+  margin-bottom: 30px;
+}
+
+#progress .progress-course-card {
+  display: flex;
+  align-items: center;
+  gap: 17px;
+  padding: 22px;
+  border: 1px solid #e0e8f2;
+  border-radius: 17px;
+  background: white;
+}
+
+#progress .course-icon {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 55px;
+  height: 55px;
+  border-radius: 16px;
+  background: #edf5ff;
+  font-size: 27px;
+}
+
+#progress .course-info {
+  flex: 1;
+  min-width: 0;
+}
+
+#progress .course-info h3 {
+  margin: 0 0 7px;
+  font-size: 17px;
+}
+
+#progress .course-info p {
+  margin: 0 0 14px;
+  color: #718198;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+#progress .course-track {
+  height: 8px;
+}
+
+#progress .course-track > div {
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: #2785d8;
+  transition: width 0.5s ease;
+}
+
+#progress .course-info small {
+  display: block;
+  margin-top: 9px;
+  color: #718198;
+}
+
+#progress .progress-badges {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+#progress .progress-badge {
+  padding: 22px 16px;
+  border: 1px solid #e0e8f2;
+  border-radius: 16px;
+  text-align: center;
+  background: white;
+}
+
+#progress .progress-badge .badge-icon {
+  margin-bottom: 12px;
+  font-size: 32px;
+}
+
+#progress .progress-badge h3 {
+  margin: 0 0 8px;
+  font-size: 15px;
+}
+
+#progress .progress-badge p {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.6;
+  color: #718198;
+}
+
+#progress .progress-badge.locked {
+  background: #f5f7fa;
+  opacity: 0.65;
+}
+
+#progress .history-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 17px 0;
+  border-bottom: 1px solid #edf1f6;
+  color: #61758c;
+  font-size: 14px;
+}
+
+#progress .history-row strong {
+  color: #183f6b;
+}
+
+#progress .progress-refresh-btn {
+  margin-top: 20px;
+  padding: 13px 18px;
+  border: 0;
+  border-radius: 10px;
+  color: white;
+  background: #1769aa;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#progress .progress-refresh-btn:hover {
+  background: #10548b;
+}
+
+@media (max-width: 900px) {
+  #progress .progress-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #progress .progress-badges {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 520px) {
+  #progress .progress-hero {
+    padding: 23px;
+  }
+
+  #progress .progress-hero-icon {
+    font-size: 35px;
+  }
+
+  #progress .progress-stats {
+    gap: 10px;
+  }
+
+  #progress .progress-stat-card {
+    padding: 15px;
+  }
+
+  #progress .progress-panel {
+    padding: 19px;
+  }
+
+  #progress .progress-badges {
+    grid-template-columns: 1fr;
+  }
+
+  #progress .progress-course-card {
+    padding: 15px;
+  }
+}
+
+.menu-toggle {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 5px 10px;
+  color: #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: -300px; 
+  width: 280px;
+  height: 100%;
+  background-color: #ffffff;
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  gap: 8px;
+  transition: left 0.3s ease-in-out;
+  z-index: 1000;
+}
+
+.sidebar.open {
+  left: 0; 
+}
+
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.sidebar-title {
+  font-weight: bold;
+  font-size: 18px;
+  color: #1a73e8;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 28px;
+  cursor: pointer;
+  color: #666;
+  padding: 0 5px;
+}
+
+.close-btn:hover {
+  color: #000;
+}
+
+
+.sidebar .nav-btn {
+  background: transparent;
+  border: none;
+  text-align: left;
+  padding: 12px 16px;
+  font-size: 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #4a5568;
+  width: 100%;
+  transition: background 0.2s, color 0.2s;
+}
+
+.sidebar .nav-btn:hover,
+.sidebar .nav-btn.active {
+  background-color: #e8f0fe;
+  color: #1a73e8;
+  font-weight: 500;
+}
+
+
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s, visibility 0.3s;
+  z-index: 999;
+}
+
+.sidebar-overlay.open {
+  visibility: visible;
+  opacity: 1;
+}
+
+
+#labs {
+  --lab-primary: #5b5ce2;
+  --lab-ink: #20243a;
+  --lab-muted: #737b91;
+  --lab-border: #e6e9f2;
+  color: var(--lab-ink);
+  padding: 28px 0 50px;
+}
+
+#labs * {
+  box-sizing: border-box;
+}
+
+#labs .lab-header {
+  padding: 38px;
+  border-radius: 24px;
+  background: linear-gradient(120deg, #171d43, #4949a8, #7778ed);
+  color: white;
+  margin-bottom: 22px;
+}
+
+#labs .lab-label {
+  font-size: 12px;
+  letter-spacing: 2px;
+  opacity: .8;
+}
+
+#labs .lab-header h1 {
+  font-size: clamp(28px, 4vw, 42px);
+  margin: 12px 0;
+}
+
+#labs .lab-header p {
+  max-width: 680px;
+  line-height: 1.8;
+  color: #e7e9ff;
+  margin-bottom: 0;
+}
+
+#labs .lab-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 15px;
+  margin-bottom: 24px;
+}
+
+#labs .lab-stat {
+  padding: 20px;
+  background: var(--lab-card-bg, #fff);
+  border: 1px solid var(--lab-border);
+  border-radius: 17px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+#labs .lab-stat strong {
+  font-size: 27px;
+  color: var(--lab-primary);
+}
+
+#labs .lab-stat span {
+  font-size: 13px;
+  color: var(--lab-muted);
+}
+
+#labs .lab-layout {
+  display: grid;
+  grid-template-columns: 245px minmax(0, 1fr);
+  gap: 22px;
+  align-items: start;
+}
+
+#labs .lab-sidebar,
+#labs .lab-card,
+#labs .lab-simulation-card {
+  background: var(--lab-card-bg, #fff);
+  border: 1px solid var(--lab-border);
+  border-radius: 18px;
+  padding: 22px;
+}
+
+#labs .lab-sidebar {
+  position: sticky;
+  top: 18px;
+}
+
+#labs .lab-sidebar h3 {
+  margin-top: 0;
+}
+
+#labs #labMenu {
+  display: grid;
+  gap: 9px;
+}
+
+#labs .lab-menu-btn {
+  width: 100%;
+  text-align: left;
+  padding: 12px;
+  border: 1px solid var(--lab-border);
+  border-radius: 11px;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  line-height: 1.5;
+}
+
+#labs .lab-menu-btn.active {
+  background: #eeeeff;
+  border-color: var(--lab-primary);
+  color: #4243bd;
+}
+
+#labs .lab-menu-btn:focus-visible,
+#labs button:focus-visible,
+#labs a:focus-visible {
+  outline: 3px solid #9293ff;
+  outline-offset: 3px;
+}
+
+#labs .lab-content {
+  min-width: 0;
+  display: grid;
+  gap: 18px;
+}
+
+#labs .lab-intro {
+  padding: 8px 2px;
+}
+
+#labs #labNumber {
+  color: var(--lab-primary);
+  font-weight: 700;
+  font-size: 12px;
+  letter-spacing: 1.5px;
+}
+
+#labs .lab-intro h2 {
+  font-size: 28px;
+  margin: 8px 0;
+}
+
+#labs .lab-intro p,
+#labs .lab-card p,
+#labs .lab-simulation-card p {
+  line-height: 1.75;
+  color: var(--lab-muted);
+}
+
+#labs .lab-card h3 {
+  margin: 10px 0 12px;
+  font-size: 17px;
+}
+
+#labs .lab-card h3:not(:first-child) {
+  margin-top: 27px;
+}
+
+#labs #labSteps {
+  padding-left: 22px;
+  line-height: 1.9;
+}
+
+#labs .simulation-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+#labs .simulation-heading h3 {
+  margin: 0;
+}
+
+#labs .simulation-heading p {
+  margin-bottom: 0;
+}
+
+#labs #labOpenExternal {
+  color: var(--lab-primary);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+#labs #labFrame {
+  display: block;
+  width: 100%;
+  height: 520px;
+  border: 1px solid var(--lab-border);
+  border-radius: 12px;
+  background: #f3f5fb;
+}
+
+#labs .lab-note {
+  font-size: 12px;
+  margin-bottom: 0;
+}
+
+#labs .lab-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+#labs .lab-table {
+  width: 100%;
+  min-width: 610px;
+  border-collapse: collapse;
+}
+
+#labs .lab-table th,
+#labs .lab-table td {
+  border: 1px solid var(--lab-border);
+  padding: 9px;
+  text-align: left;
+}
+
+#labs .lab-table th {
+  background: #f4f5ff;
+  font-size: 12px;
+}
+
+#labs .lab-table input {
+  width: 100%;
+  min-width: 100px;
+  padding: 9px;
+  border: 1px solid var(--lab-border);
+  border-radius: 7px;
+  background: transparent;
+  color: inherit;
+}
+
+#labs .lab-remove-row {
+  cursor: pointer;
+  border: 0;
+  background: transparent;
+  color: #d04456;
+  font-size: 18px;
+}
+
+#labs textarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 13px;
+  resize: vertical;
+  border: 1px solid var(--lab-border);
+  border-radius: 10px;
+  font: inherit;
+  background: transparent;
+  color: inherit;
+}
+
+#labs .lab-question {
+  padding: 15px 0;
+  border-bottom: 1px solid var(--lab-border);
+}
+
+#labs .lab-question p {
+  color: var(--lab-ink);
+  font-weight: 600;
+}
+
+#labs .lab-option {
+  display: block;
+  margin: 10px 0;
+  color: var(--lab-muted);
+  cursor: pointer;
+  line-height: 1.6;
+}
+
+#labs .lab-option input {
+  margin-right: 8px;
+  accent-color: var(--lab-primary);
+}
+.video-frame {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.video-frame iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+}
+
+#labs .lab-btn {
+  border: 0;
+  border-radius: 10px;
+  padding: 12px 17px;
+  margin-top: 14px;
+  background: var(--lab-primary);
+  color: white;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 600;
+}
+
+#labs .lab-btn-light {
+  background: #eeeeff;
+  color: #4445b9;
+}
+
+#labs .lab-btn-finish {
+  display: block;
+  width: 100%;
+  background: #168566;
+}
+
+#labs #labFeedback {
+  margin-top: 14px;
+  line-height: 1.8;
+}
+
+#labs .lab-success {
+  color: #168566;
+}
+
+#labs .lab-error {
+  color: #c2414c;
+}
+
+#labs .lab-completed-mark {
+  color: #168566;
+  font-size: 12px;
+}
+
+@media (max-width: 800px) {
+  #labs .lab-layout {
+    grid-template-columns: 1fr;
+  }
+
+  #labs .lab-sidebar {
+    position: static;
+  }
+
+  #labs #labMenu {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  #labs #labFrame {
+    height: 430px;
+  }
+
+  #labs .lab-header {
+    padding: 25px;
+  }
+}
+
+@media (max-width: 480px) {
+  #labs .lab-stats {
+    grid-template-columns: 1fr;
+  }
+
+  #labs #labMenu {
+    grid-template-columns: 1fr;
+  }
+
+  #labs .lab-sidebar,
+  #labs .lab-card,
+  #labs .lab-simulation-card {
+    padding: 15px;
+  }
+
+  #labs #labFrame {
+    height: 380px;
+  }
+}
+
+
+.tools-heading{padding:28px 0 22px}.tools-heading>span{font-size:11px;letter-spacing:2px;color:#1769aa;font-weight:800}.tools-heading h1{font-size:clamp(32px,5vw,48px);margin:10px 0}.tools-heading p{color:#64748b;line-height:1.7}.tool-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:22px}.tool-card{display:flex;flex-direction:column;align-items:flex-start;gap:8px;text-align:left;padding:20px;border:1px solid #dce6f2;border-radius:17px;background:#fff;cursor:pointer;transition:.2s}.tool-card>span{font-size:29px}.tool-card b{font-size:16px;color:#172b4d}.tool-card small{color:#718198}.tool-card.selected,.tool-card:hover{border-color:#1769aa;box-shadow:0 8px 24px #1769aa18;background:#f7fbff}.tool-panel{margin-bottom:28px}.instrument-card{max-width:900px;margin:auto;padding:28px;border:1px solid #dce6f2;border-radius:20px;background:#fff;box-shadow:0 10px 35px #183d690d;color:#172b4d}.instrument-card h2{margin-top:0}.instrument-card p{line-height:1.7;color:#526981}.instrument-display{text-align:center;font-size:clamp(42px,8vw,68px);font-variant-numeric:tabular-nums;font-weight:800;padding:28px 0;color:#1769aa}.instrument-actions{display:flex;flex-wrap:wrap;gap:9px}.instrument-actions button{border:0;border-radius:9px;background:#1769aa;color:#fff;padding:11px 15px;cursor:pointer;font-weight:700}.instrument-actions button:nth-child(n+2){background:#eaf1f8;color:#24496f}.instrument-card label{display:block;margin:18px 0 8px;font-weight:700}.instrument-card input[type=range]{width:100%;accent-color:#1769aa}.dynamo-visual{display:flex;justify-content:center;gap:50px;align-items:center;background:#f5f9ff;padding:20px;border-radius:15px}.dynamo-scale{line-height:2.4;color:#526981}.spring{font-size:24px;line-height:1.4;text-align:center;color:#1769aa}.instrument-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}.instrument-fields input{display:block;width:100%;padding:12px;border:1px solid #cbd8e8;border-radius:9px;margin-top:8px}.balance-visual{height:180px;position:relative;margin:20px auto;max-width:480px}.balance-beam{position:absolute;left:15%;right:15%;top:48px;height:9px;background:#1769aa;border-radius:9px;transform:rotate(0deg);transform-origin:center;transition:transform .2s}.balance-stand{position:absolute;left:calc(50% - 4px);top:54px;width:8px;height:75px;background:#94a3b8}.balance-pans{position:absolute;left:10%;right:10%;top:54px;display:flex;justify-content:space-between;text-align:center;font-weight:700}.balance-pans>div{width:35%}.pan{height:32px;border-bottom:5px solid #0d9488;border-radius:0 0 50% 50%;margin-top:8px}.instrument-result{padding:16px;border-radius:12px;background:#eaf8ef;color:#166534;font-size:20px;font-weight:800}.press-visual{height:160px;display:flex;align-items:flex-end;justify-content:space-around;position:relative;margin:25px 0;background:#f2f8ff;border-radius:14px;overflow:hidden}.press-fluid{position:absolute;bottom:0;left:10%;right:10%;height:45px;background:#7dd3fcaa;border:2px solid #38bdf8}.press-piston{z-index:1;display:grid;place-items:center;background:#64748b;color:#fff;border:5px solid #94a3b8;border-bottom:0;border-radius:7px 7px 0 0;font-weight:800}.small-piston{width:75px;height:65px}.big-piston{width:130px;height:110px}.ruler{height:70px;position:relative;margin:25px 0;background:#fff7d6;border:1px solid #e6c96b;border-radius:8px}.ruler-ticks{position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent 0,transparent calc(5% - 1px),#8b7355 calc(5% - 1px),#8b7355 5%);}.ruler-mark{position:absolute;top:0;bottom:0;width:3px;background:#e11d48;transition:left .15s}.protractor{position:relative;width:min(320px,100%);height:165px;margin:28px auto 0;border:2px solid #94a3b8;border-bottom:0;border-radius:320px 320px 0 0;background:repeating-conic-gradient(from 270deg at 50% 100%,#64748b 0deg 1deg,transparent 1deg 10deg);overflow:hidden}.protractor-arc{position:absolute;inset:12px 12px 0;border:1px solid #cbd5e1;border-bottom:0;border-radius:300px 300px 0 0}.protractor-needle{position:absolute;bottom:0;left:50%;width:3px;height:140px;background:#e11d48;transform-origin:bottom center;transition:transform .15s}.protractor-center{position:absolute;bottom:-5px;left:calc(50% - 6px);width:12px;height:12px;background:#1769aa;border-radius:50%}@media(max-width:600px){.instrument-card{padding:19px}.tool-cards{grid-template-columns:repeat(2,minmax(0,1fr))}.tool-card{padding:14px}.balance-visual{transform:scale(.9)}}
+
+
+/* ===== PhysiX pilot study · role-based demo ===== */
+.pilot-role-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0 16px}
+.pilot-role-option{display:block;cursor:pointer;position:relative}
+.pilot-role-option input{position:absolute;opacity:0;pointer-events:none}
+.pilot-role-option span{display:flex;flex-direction:column;gap:6px;padding:16px 12px;border:1px solid #dbe3f1;background:#f8fafc;border-radius:13px;min-height:94px;transition:.15s}
+.pilot-role-option b{font-size:15px;color:#172033}.pilot-role-option small{line-height:1.5;color:#64748b}
+.pilot-role-option input:checked + span{border:2px solid #4f46e5;background:#eef2ff;padding:15px 11px}
+.pilot-role-option input:focus-visible+span{outline:3px solid #818cf8;outline-offset:2px}
+.pilot-note{font-size:12px;line-height:1.6;color:#6b7280;padding:11px 13px;background:#f8fafc;border-radius:10px;margin:13px 0}
+.pilot-inline-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+#curator{padding-top:35px}#curator .pilot-head{border-radius:24px;padding:33px;background:linear-gradient(120deg,#172554,#3548a8 63%,#0d9488);color:#fff;display:flex;gap:25px;justify-content:space-between;align-items:center}
+#curator .pilot-head h1{font-size:clamp(28px,4vw,43px);margin:9px 0 10px;letter-spacing:-.035em}#curator .pilot-head p{max-width:700px;line-height:1.7;color:#e0e7ff;margin:0}
+#curator .pilot-kicker{font-size:12px;letter-spacing:2px;color:#a5f3fc;font-weight:800}
+#curator .pilot-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin:22px 0}
+#curator .pilot-stat{border:1px solid #e2e8f0;border-radius:17px;background:white;padding:20px}
+#curator .pilot-stat strong{display:block;font-size:32px;color:#1d4ed8;margin-top:10px}#curator .pilot-stat small{color:#64748b}
+#curator .pilot-panel{background:#fff;border:1px solid #e2e8f0;border-radius:18px;padding:22px;margin:18px 0}
+#curator .pilot-panel h2{margin:0 0 8px;font-size:21px}#curator .pilot-panel p{color:#64748b;line-height:1.6}
+#curator .pilot-toolbar{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin:19px 0}
+#curator .pilot-toolbar input,#curator .pilot-toolbar select{padding:12px 13px;background:#fff;border:1px solid #cbd5e1;border-radius:10px;color:#334155;font:inherit}
+#curator .pilot-toolbar input{flex:1;min-width:180px}#curator .pilot-toolbar select{min-width:155px}
+#curator .pilot-table-scroll{overflow-x:auto}#curator .pilot-table{width:100%;border-collapse:collapse;min-width:660px}#curator .pilot-table th{text-align:left;font-size:12px;color:#64748b;background:#f8fafc}#curator .pilot-table th,#curator .pilot-table td{padding:13px 12px;border-bottom:1px solid #edf2f7;vertical-align:middle}#curator .pilot-table td{font-size:14px}#curator .pilot-table tr:last-child td{border-bottom:0}
+#curator .pilot-meter{width:100px;max-width:100%;height:8px;background:#e2e8f0;border-radius:999px;overflow:hidden;margin-top:8px}#curator .pilot-meter span{display:block;height:100%;background:linear-gradient(90deg,#4f46e5,#0d9488)}
+#curator .pilot-tag{display:inline-block;font-size:11px;padding:5px 8px;background:#eef2ff;color:#3730a3;border-radius:999px;font-weight:700}#curator .pilot-tag.muted{background:#f1f5f9;color:#64748b}
+#curator .pilot-open{padding:9px 12px;background:#eef2ff;color:#3730a3;border:0;border-radius:10px;font-weight:800;cursor:pointer}
+#curator .pilot-detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}#curator .pilot-detail-grid h3{font-size:16px;margin:0 0 10px}
+#curator .pilot-detail-list{padding:0;list-style:none;margin:10px 0}#curator .pilot-detail-list li{border-bottom:1px solid #e5e7eb;padding:9px 0;font-size:13px;line-height:1.5}
+#curator .pilot-course-row{margin:13px 0 18px}#curator .pilot-course-row .pilot-meter{width:100%;height:9px}
+#curator #curatorNote{display:block;width:100%;min-height:85px;resize:vertical;border:1px solid #cbd5e1;border-radius:11px;padding:12px;font:inherit;margin:8px 0 12px}
+#curator .pilot-empty{padding:28px;text-align:center;background:#f8fafc;border-radius:12px;color:#64748b}
+#curator .pilot-demo-mark{font-size:11px;color:#64748b;margin-left:5px}
+@media(max-width:850px){#curator .pilot-stats{grid-template-columns:repeat(2,minmax(0,1fr))}#curator .pilot-detail-grid{grid-template-columns:1fr}}
+@media(max-width:540px){#curator .pilot-head{padding:22px;display:block}#curator .pilot-stats{gap:9px}#curator .pilot-stat{padding:13px}#curator .pilot-stat strong{font-size:25px}#curator .pilot-panel{padding:16px}.pilot-role-grid{grid-template-columns:1fr 1fr}}
+
+
+/* Authenticated accounts + login/register modes */
+.pilot-auth-tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:19px 0}
+.pilot-auth-tabs button{background:#f1f5f9;border:1px solid #e2e8f0;padding:12px;border-radius:11px;color:#64748b;cursor:pointer;font-weight:700}
+.pilot-auth-tabs button.pilot-tab-active{background:#eef2ff;border-color:#4f46e5;color:#3730a3}
+.pilot-account-card{padding:14px;border-radius:12px;background:#f1f5f9;line-height:1.7;overflow-wrap:anywhere}
+.pilot-code{font-size:25px;font-weight:900;letter-spacing:4px;color:#4f46e5;background:#eef2ff;border:1px dashed #a5b4fc;padding:14px;border-radius:12px;text-align:center;margin-top:8px}
+.pilot-code-tip{background:#eef2ff;color:#312e81!important;padding:13px 14px;border-radius:11px;line-height:1.6}
+.pilot-error:not(:empty){font-size:13px;color:#b91c1c;background:#fef2f2;border-radius:9px;padding:10px;line-height:1.5}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+    <div class="brand"><span class="logo">PH</span>PhysiX</div>
+    <button class="user" id="profileBtn" onclick="openProfileModal()">Қонақ</button>
+  </div>
+</header>
+
+
+<nav class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <span class="sidebar-title">Мәзір</span>
+    <button class="close-btn" onclick="toggleSidebar()">×</button>
+  </div>
+  
+  <button class="nav-btn pilot-student-nav active" onclick="go('home'); toggleSidebar()">Басты бет</button>
+  <button class="nav-btn pilot-student-nav" onclick="go('courses'); toggleSidebar()">Курстар</button>
+  <button class="nav-btn pilot-student-nav" onclick="go('problems'); toggleSidebar()">Есептер жинағы</button>
+  <button class="nav-btn pilot-student-nav" onclick="go('formulas'); toggleSidebar()">Формулалар</button>
+  <button class="nav-btn pilot-student-nav" onclick="go('labs'); toggleSidebar()">Зертханалық жұмыстар</button>
+  <button class="nav-btn pilot-student-nav" onclick="go('calculator'); toggleSidebar()">Құралдар</button>
+  <button class="nav-btn pilot-student-nav" onclick="go('progress'); toggleSidebar()">Прогресс</button>
+  <button id="curatorNavBtn" class="nav-btn pilot-curator-nav" onclick="go('curator'); toggleSidebar()" style="display:none">📊 Куратор панелі</button>
+</nav>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+<main class="wrap">
+<section id="home" class="page active">
+  <div class="hero">
+    <div>
+     <div class="tag">ФИЗИКАНЫ ПРАКТИКА ЖӘНЕ ЕСЕПТЕР АРҚЫЛЫ ҮЙРЕН</div>
+      <h1>Оқы. Орында. <span>Нәтижеңді көр.</span></h1>
+      <p>PhysiX — оқушылар мен студенттерге арналған қысқа сабақтар, интерактивті есептер мен прогресті бақылау мүмкіндігі бар физика оқыту платформасы.</p>
+      <div class="actions">
+        <button class="primary" onclick="handleStartBtn()">Тегін бастау</button>
+        <button class="secondary" onclick="go('courses')">Курстарды көру</button>
+      </div>
+    </div>
+    <div class="demo">
+      <div class="tag">Бүгінгі ұсыныс</div>
+      <h3>Механика: Кинематика</h3>
+      <p class="small">10 минут · 3 тақырып</p>
+      <div class="small">Жалпы прогресс: <b id="heroPct">0%</b></div>
+      <div class="bar"><i id="heroBar" style="width:0%"></i></div>
+      <button class="primary" style="width:100%" onclick="openCoursePage('mechanics')">Курсты ашу</button>
+    </div>
+  </div>
+  <div class="grid-container">
+    <div class="card-item" style="cursor:default;"><div class="tag">01</div><h3>Теория & Видео</h3><p>Толыққанды мазмұнды теориялық түсіндірмелер мен сапалы бейнесабақтар.</p></div>
+    <div class="card-item" style="cursor:default;"><div class="tag">02</div><h3>Тест & Зертханалық жұмыстар</h3><p>Теориялық білімді тест арқылы
+    тексеріп, зертханалық жұмыстарда тәжірибе жүзінде зерттеу.</p></div>
+     <div class="card-item" style="cursor:default;"><div class="tag">03</div><h3>Формулалар & Шпаргалкалар</h3><p>Барлық негізгі формулалар мен анықтамалар бір жерде, жүктеп алуға ыңғайлы.</p></div>
+  </div>
+</section>
+
+
+
+<section id="labs" class="page">
+  <div class="lab-header">
+    <span class="lab-label">PHYSICS LABORATORY</span>
+    <h1>Механика зертханасы</h1>
+    <p>
+      Виртуалды тәжірибелер орында, физикалық заңдылықтарды
+      зертте және тәжірибе нәтижелерін тексер.
+    </p>
+  </div>
+
+  <div class="lab-stats">
+    <div class="lab-stat">
+      <strong id="labTotal">6</strong>
+      <span>Виртуалды зертхана</span>
+    </div>
+    <div class="lab-stat">
+      <strong id="labCompleted">0</strong>
+      <span>Аяқталған жұмыс</span>
+    </div>
+    <div class="lab-stat">
+      <strong id="labPercent">0%</strong>
+      <span>Орындалу деңгейі</span>
+    </div>
+  </div>
+
+  <div class="lab-layout">
+    <aside class="lab-sidebar">
+      <h3>Зертханалар тізімі</h3>
+      <div id="labMenu"></div>
+    </aside>
+
+    <div class="lab-content">
+      <div class="lab-intro">
+        <span id="labNumber">ЗЕРТХАНА 01</span>
+        <h2 id="labTitle">Күш және қозғалыс</h2>
+        <p id="labGoal"></p>
+      </div>
+
+      <div class="lab-card">
+        <h3>1. Жұмыстың мақсаты</h3>
+        <p id="labPurpose"></p>
+
+        <h3>2. Қажетті теория</h3>
+        <div id="labTheory"></div>
+
+        <h3>3. Орындалу тәртібі</h3>
+        <ol id="labSteps"></ol>
+      </div>
+
+      <div class="lab-simulation-card">
+        <div class="simulation-heading">
+          <div>
+            <h3>Виртуалды тәжірибе</h3>
+            <p>Модельдегі параметрлерді өзгертіп, қозғалысты бақыла.</p>
+          </div>
+          <a id="labOpenExternal"
+             href="https://phet.colorado.edu/"
+             target="_blank"
+             rel="noopener noreferrer">
+            Жаңа бетте ашу ↗
+          </a>
+        </div>
+
+        <iframe
+          id="labFrame"
+          title="Механика виртуалды зертханасы"
+          src="https://phet.colorado.edu/sims/html/forces-and-motion-basics/latest/forces-and-motion-basics_en.html"
+          loading="lazy"
+          allowfullscreen>
+        </iframe>
+
+        <p class="lab-note">
+          Ескерту: симуляцияны пайдалану үшін интернет байланысы қажет.
+        </p>
+      </div>
+
+      <div class="lab-card">
+        <h3>4. Тәжірибе нәтижелері</h3>
+        <p>
+          Тәжірибені бірнеше рет орындап, өзгерткен параметрлеріңді
+          және бақылаған нәтижелеріңді кестеге енгіз.
+        </p>
+
+        <div class="lab-table-wrap">
+          <table class="lab-table">
+            <thead>
+              <tr>
+                <th>№</th>
+                <th>Өзгертілген параметр</th>
+                <th>Бақыланған нәтиже</th>
+                <th>Қорытынды</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="labResultRows"></tbody>
+          </table>
+        </div>
+
+        <button type="button" class="lab-btn lab-btn-light"
+                onclick="addLabRow()">
+          + Жол қосу
+        </button>
+
+        <h3 class="lab-conclusion-title">Жалпы қорытынды</h3>
+        <textarea id="labConclusion"
+          placeholder="Тәжірибеден қандай заңдылық байқадың? Қорытындыңды жаз..."></textarea>
+
+        <h3>5. Бақылау сұрақтары</h3>
+        <div id="labQuestions"></div>
+
+        <button type="button" class="lab-btn"
+                onclick="checkLabAnswers()">
+          Жауаптарды тексеру
+        </button>
+
+        <div id="labFeedback" aria-live="polite"></div>
+
+        <button type="button" class="lab-btn lab-btn-finish"
+                onclick="completeLab()">
+          ✓ Зертхананы аяқтау
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="problems" class="page">
+  <div class="problems-container">
+
+    <header class="problems-hero">
+      <span>PHYSICS • PRACTICE</span>
+      <h1>Механика есептер жинағы</h1>
+      <p>Есепті таңда, формуланы қолдан және жауабыңды тексер.</p>
+
+      <div class="problems-stats">
+        <div>
+          <strong id="problemTotal">22</strong>
+          <small>Барлық есеп</small>
+        </div>
+        <div>
+          <strong id="problemSolved">0</strong>
+          <small>Дұрыс жауап</small>
+        </div>
+      </div>
+    </header>
+
+    <div class="problems-filter">
+      <input
+        id="problemSearch"
+        type="search"
+        placeholder="Тақырып немесе есеп бойынша іздеу..."
+      >
+
+      <select id="problemCourse">
+        <option value="all">Барлық тараулар</option>
+        <option value="kinematics">Кинематика</option>
+        <option value="dynamics">Динамика</option>
+        <option value="statics">Статика</option>
+      </select>
+
+      <select id="problemLevel">
+        <option value="all">Барлық деңгей</option>
+        <option value="Оңай">Оңай</option>
+        <option value="Орташа">Орташа</option>
+        <option value="Күрделі">Күрделі</option>
+      </select>
+    </div>
+
+    <div id="problemList" class="problem-list"></div>
+
+  </div>
+</section>
+<section id="courses" class="page">
+  <div class="title"><div class="tag">Оқу бағыттары</div><h1>Курстар</h1><p>Кинематика, динамика және статика бөлімдерін таңдап оқы.</p></div>
+  <div class="grid-container" id="courseGrid"></div>
+</section>
+<section id="course-detail" class="page">
+  <div style="margin-bottom: 25px;">
+    <button class="secondary" onclick="go('courses')">← Барлық курстарға қайту</button>
+  </div>
+  <div class="title" id="courseDetailHeader"></div>
+  <div class="list" id="topicsList"></div>
+</section>
+<section id="lesson-detail" class="page">
+  <div style="margin-bottom: 25px;">
+    <button class="secondary" onclick="backToCourse()">← Курсқа қайту</button>
+  </div>
+  <div class="card-item" style="padding: 35px; border-radius: 22px; width:100%; max-width:100%;">
+    <div class="tag" id="lessonCategory">Категория</div>
+    <h1 id="lessonTitle" style="font-size: 36px; margin: 15px 0 20px; color: var(--text);">Тақырып атауы</h1>
+    <hr style="border: 0; border-top: 1px solid var(--line); margin-bottom: 25px;">
+    <div id="lessonContent" style="color: var(--muted); font-size: 16px; line-height: 1.8; margin-bottom: 35px;">
+      Тақырып мазмұны осында шығады...
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <span id="lessonStatusText" class="pill" style="font-size: 13px;">Өтілмеді</span>
+      <button class="primary" id="finishLessonBtn" onclick="finishCurrentTopic()">Тақырыпты оқыдым ✓</button>
+    </div>
+  </div>
+</section>
+<section id="formulas" class="page">
+  <div class="formula-hero">
+    <span class="formula-kicker">MECHANICS • FORMULA GUIDE</span>
+    <h1>Механика формулалары жинағы</h1>
+    <p>Формуланы тақырып, атау немесе физикалық шама бойынша ізде. Әр формулаға түсіндірме, белгіленулер және өлшем бірліктері берілген.</p>
+    <div class="formula-search-wrap">
+      <span aria-hidden="true">⌕</span>
+      <input id="formulaSearch" type="search" placeholder="Мысалы: жылдамдық, Ньютон, күш моменті..." oninput="renderFormulaCards()" aria-label="Формулаларды іздеу">
+      <button type="button" class="formula-clear" onclick="clearFormulaSearch()">Тазарту</button>
+    </div>
+  </div>
+
+  <div class="formula-tools">
+    <label for="formulaTopic">Тақырып бойынша сүзгі:</label>
+    <select id="formulaTopic" onchange="renderFormulaCards()">
+      <option value="all">Барлық тақырып</option>
+      <option value="Кинематика">Кинематика</option>
+      <option value="Динамика">Динамика</option>
+      <option value="Статика">Статика</option>
+    </select>
+    <span id="formulaCount" class="formula-count">0 формула</span>
+  </div>
+
+  <div id="formulaGrid" class="formula-grid"></div>
+  <div id="formulaEmpty" class="formula-empty" hidden>
+    <strong>Формула табылмады</strong>
+    <p>Іздеу сөзін өзгертіңіз немесе басқа тақырыпты таңдаңыз.</p>
+  </div>
+</section>
+
+<section id="progress" class="page">
+  <div class="progress-container">
+
+    <header class="progress-hero">
+      <div>
+        <span class="progress-label">MY LEARNING DASHBOARD</span>
+        <h1>Менің прогресім</h1>
+        <p>Механиканы меңгеру барысыңды бақыла.</p>
+      </div>
+
+      <div class="progress-hero-icon">📈</div>
+    </header>
+    <div class="progress-stats">
+
+      <div class="progress-stat-card">
+        <div class="progress-stat-icon blue">📚</div>
+        <p>Аяқталған тақырыптар</p>
+        <h2 id="progressTopics">0/22</h2>
+        <small>Меңгерілген сабақтар</small>
+      </div>
+
+      <div class="progress-stat-card">
+        <div class="progress-stat-icon green">🎯</div>
+        <p>Тест нәтижесі</p>
+        <h2 id="progressTest">0%</h2>
+        <small>Сақталған тест ұпайлары</small>
+      </div>
+
+      <div class="progress-stat-card">
+        <div class="progress-stat-icon purple">🧮</div>
+        <p>Дұрыс шығарылған есептер</p>
+        <h2 id="progressProblems">0</h2>
+        <small>Есептер жинағынан</small>
+      </div>
+
+      <div class="progress-stat-card">
+        <div class="progress-stat-icon orange">🏆</div>
+        <p>Жетістіктер</p>
+        <h2 id="progressAchievements">0</h2>
+        <small>Ашылған марапаттар</small>
+      </div>
+
+    </div>
+
+    <!-- Жалпы прогресс -->
+    <div class="progress-panel">
+      <div class="progress-panel-heading">
+        <div>
+          <h2>Жалпы оқу прогресі</h2>
+          <p>Аяқталған тақырыптар негізінде есептеледі.</p>
+        </div>
+        <strong id="progressPercent">0%</strong>
+      </div>
+
+      <div class="progress-track">
+        <div id="progressBar" class="progress-fill"></div>
+      </div>
+
+      <p id="progressMessage" class="progress-message">
+        Алғашқы тақырыпты оқып баста!
+      </p>
+    </div>
+    <div class="progress-section-heading">
+      <div>
+        <h2>Тараулар бойынша нәтиже</h2>
+        <p>Әр бөлімдегі оқу белсенділігің.</p>
+      </div>
+    </div>
+
+    <div class="progress-courses">
+
+      <div class="progress-course-card">
+        <div class="course-icon">🚀</div>
+        <div class="course-info">
+          <h3>Кинематика</h3>
+          <p>Қозғалыс, жол, жылдамдық және үдеу</p>
+          <div class="course-track">
+            <div id="kinematicsProgressBar"></div>
+          </div>
+          <small id="kinematicsProgressText">0 тақырып аяқталды</small>
+        </div>
+      </div>
+
+      <div class="progress-course-card">
+        <div class="course-icon">⚙️</div>
+        <div class="course-info">
+          <h3>Динамика</h3>
+          <p>Күш, Ньютон заңдары және энергия</p>
+          <div class="course-track">
+            <div id="dynamicsProgressBar"></div>
+          </div>
+          <small id="dynamicsProgressText">0 тақырып аяқталды</small>
+        </div>
+      </div>
+
+      <div class="progress-course-card">
+        <div class="course-icon">⚖️</div>
+        <div class="course-info">
+          <h3>Статика</h3>
+          <p>Тепе-теңдік, күш моменті және иінтірек</p>
+          <div class="course-track">
+            <div id="staticsProgressBar"></div>
+          </div>
+          <small id="staticsProgressText">0 тақырып аяқталды</small>
+        </div>
+      </div>
+
+    </div>
+
+    <div id="progressList" style="margin-bottom:28px" aria-label="Курстар және тест нәтижелері"></div>
+
+    <!-- Жетістіктер -->
+    <div class="progress-section-heading">
+      <div>
+        <h2>Менің жетістіктерім</h2>
+        <p>Оқу барысында жаңа марапаттар аш.</p>
+      </div>
+    </div>
+
+    <div id="progressBadges" class="progress-badges"></div>
+
+
+    <div class="progress-panel progress-history">
+      <h2>Оқу қорытындысы</h2>
+      <div class="history-row">
+        <span>Орындалған тақырыптар</span>
+        <strong id="historyTopics">0</strong>
+      </div>
+      <div class="history-row">
+        <span>Дұрыс шығарылған есептер</span>
+        <strong id="historyProblems">0</strong>
+      </div>
+      <div class="history-row">
+        <span>Тест ұпайларының қосындысы</span>
+        <strong id="historyScore">0</strong>
+      </div>
+
+      <button class="secondary" onclick="pilotExportStudent()" type="button" style="margin:20px 10px 0 0">↓ Менің нәтижелерімді JSON форматына сақтау</button>
+      <button class="progress-refresh-btn" onclick="refreshProgressPage()">
+        ↻ Прогресті жаңарту
+      </button>
+    </div>
+
+  </div>
+</section>
+</main>
+
+<section id="curator" class="page" aria-label="Куратор панелі">
+  <div class="wrap">
+    <div class="pilot-head">
+      <div><div class="pilot-kicker">PHYSIX • ПИЛОТТЫҚ ОҚЫТУ</div><h1>Куратор панелі</h1><p>Оқушылардың курсқа қатысуын, аяқтаған тақырыптарын, тест нәтижелерін және зертханалық жұмыстарын бақылау.</p></div>
+      <div aria-hidden="true" style="font-size:64px">📊</div>
+    </div>
+    <div class="pilot-stats">
+      <div class="pilot-stat"><small>Оқушылар</small><strong id="pilotTotal">0</strong></div>
+      <div class="pilot-stat"><small>Оқуды бастағандар</small><strong id="pilotStarted">0</strong></div>
+      <div class="pilot-stat"><small>Орташа прогресс</small><strong id="pilotAverageProgress">0%</strong></div>
+      <div class="pilot-stat"><small>Тесттердің орташа бағасы</small><strong id="pilotAverageScore">—</strong></div>
+    </div>
+    <div class="pilot-panel">
+      <h2>Пилоттық топты бақылау</h2>
+      <p>Оқушылар тіркелгеннен кейін куратор кодын енгізіп, сіздің тобыңызға қосылады. Нәтижелер ортақ дерекқорда сақталады және бұл бет жаңартылғанда автоматты түрде жүктеледі.</p>
+      <div class="pilot-inline-actions">
+        <button class="secondary" type="button" onclick="pilotAddDemoStudents()">＋ Демо оқушыларды қосу</button>
+        <button class="secondary" type="button" onclick="pilotExportCSV()">↓ CSV есепті жүктеу</button>
+        <button class="secondary" type="button" onclick="pilotFetchStudents()">↻ Оқушыларды жаңарту</button>
+
+      </div>
+      <p class="pilot-code-tip">Топқа қосылу коды: <strong id="pilotInlineCode">Профильді ашыңыз</strong> · Бұл кодты оқушыларыңызға жіберіңіз.</p>
+      <div class="pilot-toolbar"><input id="pilotSearch" type="search" placeholder="Аты-жөні немесе email бойынша іздеу..." oninput="pilotRenderCurator()" aria-label="Оқушыны іздеу"><select id="pilotStatus" onchange="pilotRenderCurator()" aria-label="Белсенділік сүзгісі"><option value="all">Барлық оқушылар</option><option value="started">Оқуды бастаған</option><option value="not-started">Бастамаған</option><option value="completed">Барлығын аяқтаған</option></select></div>
+      <div id="pilotStudentTable" class="pilot-table-scroll"></div>
+    </div>
+    <div id="pilotStudentDetail" class="pilot-panel" hidden></div>
+  </div>
+</section>
+
+<section id="calculator" class="page">
+  <div class="tools-heading"><span>PHYSIX • INTERACTIVE TOOLS</span><h1>Физикалық құралдар</h1><p>Құралды таңдап, физикалық шамаларды тәжірибе арқылы зертте.</p></div>
+  <div class="tool-cards">
+    <button class="tool-card selected" onclick="showTool('calc',this)"><span>🧮</span><b>Физикалық калькулятор</b><small>Формула бойынша есептеу</small></button>
+    <button class="tool-card" onclick="showTool('stopwatch',this)"><span>⏱️</span><b>Секундомер</b><small>Уақытты өлшеу</small></button>
+    <button class="tool-card" onclick="showTool('dynamometer',this)"><span>🪝</span><b>Динамометр</b><small>Күшті өлшеу</small></button>
+    <button class="tool-card" onclick="showTool('balance',this)"><span>⚖️</span><b>Таразы</b><small>Массаны өлшеу</small></button>
+    <button class="tool-card" onclick="showTool('press',this)"><span>🔧</span><b>Гидравликалық пресс</b><small>Паскаль заңын зерттеу</small></button>
+    <button class="tool-card" onclick="showTool('ruler',this)"><span>📏</span><b>Сызғыш және транспортир</b><small>Ұзындық пен бұрыш</small></button>
+  </div>
+  <div id="tool-calc" class="tool-panel"><div class="calc-container">
+
+    <div class="calc-header">
+      <span class="calc-label">PHYSICS • MECHANICS</span>
+      <h1>Механика калькуляторы</h1>
+      <p>Формуланы таңда, мәндерді енгіз және есептің нәтижесін шығар.</p>
+    </div>
+
+    <div class="calc-card">
+      <label for="calcCategory">Механика тарауы</label>
+      <select id="calcCategory" onchange="updateCalcFormulas()">
+        <option value="kinematics">Кинематика</option>
+        <option value="dynamics">Динамика</option>
+        <option value="statics">Статика</option>
+      </select>
+
+      <label for="calcFormula">Есептеу формуласы</label>
+      <select id="calcFormula" onchange="renderCalcInputs()"></select>
+
+      <div class="calc-formula-box">
+        <span>ФОРМУЛА</span>
+        <strong id="calcFormulaText">v = s / t</strong>
+        <p id="calcFormulaDescription"></p>
+      </div>
+
+      <div id="calcInputs" class="calc-inputs"></div>
+
+      <button class="calc-button" onclick="calculateMechanics()">
+        Есептеу
+      </button>
+
+      <button class="calc-reset" onclick="resetMechanicsCalc()">
+        Тазарту
+      </button>
+
+      <div id="calcResult" class="calc-result" aria-live="polite">
+        <span>НӘТИЖЕ</span>
+        <h2>—</h2>
+        <p>Мәндерді енгізіп, «Есептеу» батырмасын бас.</p>
+      </div>
+    </div>
+
+    <div class="calc-note">
+      <strong>Ескерту:</strong>
+      Мәндерді SI жүйесінде енгіз: жол — метр, уақыт — секунд,
+      масса — килограмм, күш — ньютон.
+    </div>
+
+  </div></div>
+  <div id="tool-stopwatch" class="tool-panel" hidden><div class="instrument-card"><h2>⏱️ Секундомер</h2><div id="swDisplay" class="instrument-display">00:00.00</div><div class="instrument-actions"><button onclick="swStart()">Бастау</button><button onclick="swPause()">Үзіліс</button><button onclick="swReset()">Қайта бастау</button><button onclick="swLap()">Аралық уақыт</button></div><ol id="swLaps"></ol></div></div>
+  <div id="tool-dynamometer" class="tool-panel" hidden><div class="instrument-card"><h2>🪝 Динамометр</h2><p>Жүктің күшін өзгертіп, серіппенің созылуын бақыла.</p><label>Күш: <b id="forceValue">5</b> Н</label><input type="range" min="0" max="20" step="0.5" value="5" oninput="updateDynamometer(this.value)"><div class="dynamo-visual"><div class="dynamo-scale">0 Н<br>5 Н<br>10 Н<br>15 Н<br>20 Н</div><div class="spring" id="springVisual">〰<br>〰<br>〰<br>〰<br>🪝</div></div><p id="forceExplain">Күш: 5 Н. Серіппенің созылуы күшке тәуелді.</p></div></div>
+  <div id="tool-balance" class="tool-panel" hidden><div class="instrument-card"><h2>⚖️ Таразы</h2><p>Екі табақшадағы массаларды өзгертіп, таразының тепе-теңдігін тексер.</p><div class="balance-visual"><div id="balanceBeam" class="balance-beam"></div><div class="balance-stand"></div><div class="balance-pans"><div><span id="leftMassLabel">200 г</span><div class="pan"></div></div><div><span id="rightMassLabel">200 г</span><div class="pan"></div></div></div></div><div class="instrument-fields"><label>Сол жақ масса (г)<input id="leftMass" type="number" value="200" min="0" oninput="updateBalance()"></label><label>Оң жақ масса (г)<input id="rightMass" type="number" value="200" min="0" oninput="updateBalance()"></label></div><p id="balanceResult">Таразы тепе-теңдікте.</p></div></div>
+  <div id="tool-press" class="tool-panel" hidden><div class="instrument-card"><h2>🔧 Гидравликалық престің демонстрациялық моделі</h2><p>Паскаль заңы: сұйыққа түсірілген қысым барлық бағытқа бірдей беріледі.</p><div class="press-visual"><div class="press-piston small-piston">F₁</div><div class="press-fluid"></div><div class="press-piston big-piston">F₂</div></div><div class="instrument-fields"><label>Кіші поршень ауданы S₁ (см²)<input id="area1" type="number" min="1" value="5" oninput="updatePress()"></label><label>Үлкен поршень ауданы S₂ (см²)<input id="area2" type="number" min="1" value="50" oninput="updatePress()"></label><label>Кіші поршеньге түсетін күш F₁ (Н)<input id="force1" type="number" min="0" value="20" oninput="updatePress()"></label></div><div class="instrument-result" id="pressResult">Үлкен поршеньдегі күш: 200 Н</div><p id="pressExplanation">Аудан 10 есе үлкен болғандықтан, күш те 10 есе артады.</p></div></div>
+  <div id="tool-ruler" class="tool-panel" hidden><div class="instrument-card"><h2>📏 Демонстрациялық сызғыш пен транспортир</h2><p>Сызғыштан ұзындықты, транспортирден бұрышты оқы.</p><label>Ұзындық: <b id="rulerValue">6</b> см</label><input type="range" min="0" max="20" value="6" oninput="document.getElementById('rulerValue').textContent=this.value;document.getElementById('rulerMark').style.left=(Number(this.value)/20*100)+'%'"><div class="ruler"><div class="ruler-ticks"></div><div id="rulerMark" class="ruler-mark" style="left:30%"></div></div><label>Бұрыш: <b id="angleValue">45</b>°</label><input type="range" min="0" max="180" value="45" oninput="updateProtractor(this.value)"><div class="protractor"><div class="protractor-arc"></div><div id="protractorNeedle" class="protractor-needle" style="transform:rotate(-45deg)"></div><div class="protractor-center"></div></div><p id="angleExplain">Өлшенетін бұрыш: 45°</p></div></div>
+</section>
+<footer><div class="wrap">Physix · студенттік жоба · 2027</div></footer>
+
+
+<div class="modal hidden" id="profileModal" role="dialog" aria-modal="true" aria-labelledby="pilotModalTitle">
+  <div class="modal-card" style="width:min(520px,100%);max-height:92vh;overflow-y:auto">
+    <button id="pilotProfileClose" class="x" type="button" aria-label="Жабу" onclick="closeProfileModal()">×</button>
+    <div class="tag">PHYSIX • ONLINE LEARNING</div>
+    <h2 id="pilotModalTitle" style="color:var(--text);margin:10px 0">Аккаунтқа кіру</h2>
+    <p id="pilotAuthText" class="small">Email мен парольді енгізіңіз.</p>
+    <p id="pilotNetworkError" class="pilot-error" aria-live="polite"></p>
+    <div id="pilotAuthTabs" class="pilot-auth-tabs"><button id="pilotLoginTab" type="button" class="pilot-tab-active" onclick="pilotShowAuth('login')">Кіру</button><button id="pilotRegisterTab" type="button" onclick="pilotShowAuth('register')">Тіркелу</button></div>
+    <form id="pilotAuthForm" onsubmit="pilotSubmitAuth(event)">
+      <div id="pilotRolesWrap" hidden><label class="small" style="font-weight:700">Сіздің рөліңіз:</label>
+        <div class="pilot-role-grid" role="group" aria-label="Пайдаланушы рөлі">
+          <label class="pilot-role-option"><input type="radio" name="pilotRole" value="student" checked onchange="pilotUpdateRoleFields()"><span><b>🎓 Оқушы</b><small>Сабақ оқу және тест тапсыру</small></span></label>
+          <label class="pilot-role-option"><input type="radio" name="pilotRole" value="curator" onchange="pilotUpdateRoleFields()"><span><b>👨‍🏫 Куратор</b><small>Оқушыларды бақылау</small></span></label>
+        </div>
+      </div>
+      <div id="pilotNameWrap" hidden><label class="small" style="font-weight:700" for="nameInput">Аты-жөніңіз:</label><input id="nameInput" class="field" autocomplete="name" placeholder="Алиман Алихан" maxlength="90"></div>
+      <label class="small" style="font-weight:700" for="emailInput">Электронды пошта:</label>
+      <input id="emailInput" class="field" type="email" autocomplete="username" placeholder="student@example.com" maxlength="120" required>
+      <label class="small" style="font-weight:700" for="passwordInput">Пароль:</label>
+      <input id="passwordInput" class="field" type="password" autocomplete="current-password" minlength="8" placeholder="Кемінде 8 таңба" required>
+      <div id="pilotConfirmWrap" hidden><label class="small" style="font-weight:700" for="pilotConfirmPassword">Парольді қайталау:</label><input id="pilotConfirmPassword" class="field" type="password" autocomplete="new-password" placeholder="Парольді қайталаңыз"></div>
+      <div id="pilotCuratorCodeWrap" hidden><label class="small" style="font-weight:700" for="pilotCuratorCodeInput">Куратор коды (оқушы үшін, міндетті емес):</label><input id="pilotCuratorCodeInput" class="field" placeholder="Мысалы: JK82P5RT" maxlength="8"><p class="small" style="margin:-5px 0 12px">Бұл кодты кураторыңыздан алыңыз. Кейін де қосылуға болады.</p></div>
+      <button id="pilotAuthSubmit" class="primary" type="submit" style="width:100%;margin-top:9px">Кіру →</button>
+    </form>
+    <div id="pilotAccount" hidden>
+      <div class="pilot-account-card"><b id="pilotAccountDetails"></b></div>
+      <div id="pilotCuratorManage" hidden><label class="small" style="font-weight:700">Оқушыларға берілетін куратор коды:</label><div class="pilot-code" id="pilotMyCode">—</div><p class="small">Оқушылар осы кодты тіркелгенде немесе жеке кабинетте енгізеді.</p></div>
+      <div id="pilotStudentJoin" hidden><label class="small" style="font-weight:700" for="pilotJoinCode">Куратор тобына қосылу:</label><div style="display:flex;gap:8px"><input id="pilotJoinCode" class="field" style="margin:4px 0" maxlength="8" placeholder="8 таңбалы код"><button type="button" class="secondary" onclick="pilotJoinCurator()">Қосылу</button></div></div>
+      <button class="secondary" type="button" onclick="pilotLogout()" style="width:100%;margin-top:20px">Шығу / Басқа аккаунтпен кіру</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">Сақталды</div>
+
+<script>
+
+/* ===== PhysiX server-backed accounts (Flask/SQLite) ===== */
+const PILOT_LEGACY = ['techmechanics_done','techmechanics_quiz_scores','mechanics_problems_solved','physix_labs_done','physix_labs_scores'];
+// Browser storage is only a temporary view/cache for the existing lesson modules.
+// Database and logged-in session are authoritative; do not auto-import old browser profiles.
+PILOT_LEGACY.forEach(key=>localStorage.removeItem(key));
+localStorage.removeItem('physix_name');localStorage.removeItem('physix_email');
+function pilotRead(key,fallback){try{const d=JSON.parse(localStorage.getItem(key));return d==null?fallback:d}catch(_){return fallback}}
+function pilotEmptyProgress(){return {done:[],quizzes:{},problems:[],labsDone:[],labsScores:{}}}
+let pilotUsers=[];
+let pilotActiveUser=null;
+let pilotCsrf='';
+let pilotReady=false;
+let pilotSaveTimer=null;
+let pilotSaving=null;
+let pilotDirty=false;
+let pilotAuthMode='login';
+function pilotActive(){return pilotActiveUser}
+function pilotEscape(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+async function pilotApi(url,method='GET',body){
+  const opts={method,credentials:'same-origin',headers:{'Accept':'application/json'}};
+  if(method!=='GET')opts.headers['X-CSRF-Token']=pilotCsrf;
+  if(body!==undefined){opts.headers['Content-Type']='application/json';opts.body=JSON.stringify(body)}
+  const response=await fetch(url,opts);
+  let json={};try{json=await response.json()}catch(_){}
+  if(!response.ok)throw Error(json.error||'Сервер қатесі: '+response.status);
+  return json;
+}
+function pilotLoadLocal(user){
+  const p=user?.role==='student'?user.progress||pilotEmptyProgress():pilotEmptyProgress();
+  const keys={techmechanics_done:p.done||[],techmechanics_quiz_scores:p.quizzes||{},mechanics_problems_solved:p.problems||[],physix_labs_done:p.labsDone||[],physix_labs_scores:p.labsScores||{}};
+  for(const [k,v] of Object.entries(keys))localStorage.setItem(k,JSON.stringify(v));
+  if(user){localStorage.setItem('physix_name',user.name);localStorage.setItem('physix_email',user.email)}
+  else{localStorage.removeItem('physix_name');localStorage.removeItem('physix_email')}
+  completed=[...(p.done||[])];quizScores={...(p.quizzes||{})};
+  username=user?.name||'';useremail=user?.email||'';
+  solvedMechanicsProblems=[...(p.problems||[])];
+  completedLabs=new Set(p.labsDone||[]);labScores={...(p.labsScores||{})};
+  document.querySelectorAll('.lab-completed-mark').forEach(el=>{
+    const i=Number(el.id.replace('labMark',''));el.textContent=completedLabs.has(i)?'✓':'';
+  });
+  render();renderProblems();refreshProgressPage();updateLabStats();
+}
+function pilotSetRole(role){const input=document.querySelector(`input[name="pilotRole"][value="${role==='curator'?'curator':'student'}"]`);if(input)input.checked=true}
+async function pilotBootstrapServer(){
+  try{
+    const response=await pilotApi('/api/me');
+    pilotCsrf=response.csrf;
+    pilotActiveUser=response.user;
+    if(pilotActiveUser&&pilotActiveUser.role==='student')pilotActiveUser.progress=response.progress||pilotEmptyProgress();
+    pilotReady=true;
+    pilotLoadLocal(pilotActiveUser);
+    pilotRenderNav();
+    if(!pilotActiveUser){pilotShowAuth('login');openProfileModal()}
+  }catch(error){
+    document.getElementById('pilotNetworkError').textContent='Сервермен байланыс жоқ: '+error.message+' — сайтты app.py арқылы ашыңыз.';
+    pilotShowAuth('login');openProfileModal();
+  }
+}
+function pilotSaveCurrent(){
+  const user=pilotActive();if(!pilotReady||!user||user.role!=='student')return;
+  user.progress={
+    done:[...completed],quizzes:{...quizScores},problems:[...solvedMechanicsProblems],
+    labsDone:[...completedLabs],labsScores:labScores
+  };
+  user.lastActive=new Date().toISOString();
+  // Compatibility with the old front-end progress components.
+  localStorage.setItem('physix_labs_done',JSON.stringify(user.progress.labsDone));
+  localStorage.setItem('physix_labs_scores',JSON.stringify(user.progress.labsScores));
+  pilotDirty=true;
+  clearTimeout(pilotSaveTimer);
+  pilotSaveTimer=setTimeout(()=>pilotPushProgress(),300);
+}
+async function pilotPushProgress(){
+  clearTimeout(pilotSaveTimer);
+  if(!pilotActive()||pilotActive().role!=='student'||!pilotReady)return true;
+  if(pilotSaving)return pilotSaving;
+  pilotSaving=(async()=>{
+    do{
+      pilotDirty=false;
+      const snapshot=JSON.parse(JSON.stringify(pilotActive().progress||pilotEmptyProgress()));
+      try{await pilotApi('/api/progress','PUT',snapshot)}
+      catch(e){pilotDirty=true;toast('Прогресс сақталмады: '+e.message);return false}
+    }while(pilotDirty);
+    return true;
+  })();
+  try{return await pilotSaving}finally{pilotSaving=null}
+}
+async function pilotFetchStudents(){
+  if(pilotActive()?.role!=='curator')return;
+  try{
+    const result=await pilotApi('/api/students');
+    pilotUsers=result.students||[];
+    pilotRenderCurator();
+  }catch(e){toast('Оқушылар жүктелмеді: '+e.message)}
+}
+function pilotShowAuth(mode){
+  pilotAuthMode=mode;
+  const registered=mode==='register', a=pilotActive();
+  document.getElementById('pilotAuthTabs').hidden=!!a;
+  document.getElementById('pilotAuthForm').hidden=!!a;
+  document.getElementById('pilotAccount').hidden=!a;
+  document.getElementById('pilotNameWrap').hidden=!registered;
+  document.getElementById('pilotRolesWrap').hidden=!registered;
+  document.getElementById('pilotCuratorCodeWrap').hidden=!registered || document.querySelector('input[name="pilotRole"]:checked')?.value==='curator';
+  document.getElementById('pilotConfirmWrap').hidden=!registered;
+  document.getElementById('pilotAuthSubmit').textContent=registered?'Аккаунт тіркеу →':'Кіру →';
+  document.getElementById('pilotLoginTab').classList.toggle('pilot-tab-active',!registered);
+  document.getElementById('pilotRegisterTab').classList.toggle('pilot-tab-active',registered);
+  document.getElementById('pilotModalTitle').textContent=a?'Менің аккаунтым':registered?'Жаңа аккаунт тіркеу':'Аккаунтқа кіру';
+  document.getElementById('pilotAuthText').textContent=a?'Аккаунт деректері және басқару':registered?'Рөлді таңдап, аты-жөніңізді, email мен парольді енгізіңіз.':'Бұрын тіркелген email мен пароліңізді енгізіңіз.';
+  document.getElementById('pilotProfileClose').hidden=!a;
+  if(a){
+    const role=a.role==='curator'?'👨‍🏫 Куратор':'🎓 Оқушы';
+    document.getElementById('pilotAccountDetails').textContent=`${a.name} · ${a.email} · ${role}`;
+    document.getElementById('pilotCuratorManage').hidden=a.role!=='curator';
+    document.getElementById('pilotStudentJoin').hidden=a.role!=='student';
+    document.getElementById('pilotMyCode').textContent=a.curatorCode||'—';
+  }
+}
+async function pilotSubmitAuth(event){
+  event.preventDefault();
+  if(!pilotCsrf){return toast('Серверге байланыс жоқ. app.py іске қосыңыз')}
+  const email=document.getElementById('emailInput').value.trim();
+  const password=document.getElementById('passwordInput').value;
+  const registered=pilotAuthMode==='register';
+  const data={email,password};
+  if(registered){
+    data.name=document.getElementById('nameInput').value.trim();
+    data.role=document.querySelector('input[name="pilotRole"]:checked')?.value||'student';
+    if(password!==document.getElementById('pilotConfirmPassword').value)return toast('Парольдер сәйкес келмейді');
+    if(password.length<8)return toast('Пароль кемінде 8 таңбадан тұруы керек');
+    if(data.role==='student')data.curatorCode=document.getElementById('pilotCuratorCodeInput').value.trim();
+  }
+  const button=document.getElementById('pilotAuthSubmit');button.disabled=true;
+  try{
+    const result=await pilotApi(registered?'/api/register':'/api/login','POST',data);
+    pilotCsrf=result.csrf;
+    if(registered){
+      pilotShowAuth('login');
+      document.getElementById('passwordInput').value='';
+      document.getElementById('pilotConfirmPassword').value='';
+      toast('Аккаунт тіркелді. Енді email және парольмен кіріңіз.');
+    }else{window.location.reload();}
+  }catch(e){toast(e.message)}finally{button.disabled=false}
+}
+async function pilotLogout(){
+  if(pilotActive()?.role==='student'){
+    pilotSaveCurrent();
+    if(!await pilotPushProgress())return;
+  }
+  try{await pilotApi('/api/logout','POST');window.location.reload()}
+  catch(e){toast('Шығу қатесі: '+e.message)}
+}
+async function pilotJoinCurator(){
+  const code=document.getElementById('pilotJoinCode').value.trim();
+  try{
+    const result=await pilotApi('/api/student/join','POST',{code});
+    pilotActiveUser.curatorId=result.curatorId;
+    toast('Кураторға сәтті қосылдыңыз');
+    document.getElementById('pilotJoinCode').value='';
+  }catch(e){toast(e.message)}
+}
+window.addEventListener('online',()=>{if(pilotDirty)pilotPushProgress()});
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&pilotDirty)pilotPushProgress()});
+function pilotRenderNav(){
+  const a=pilotActive(), curator=!!a&&a.role==='curator';
+  document.querySelectorAll('.pilot-student-nav').forEach(n=>n.style.display=curator?'none':'');
+  document.querySelectorAll('.pilot-curator-nav').forEach(n=>n.style.display=curator?'':'none');
+  const label=document.getElementById('profileBtn');
+  if(label)label.textContent=a?(a.role==='curator'?'👨‍🏫 ':'🎓 ')+a.name:'Кіру / Тіркелу';
+  if(curator){document.getElementById('pilotInlineCode').textContent=a.curatorCode||'—';go('curator');pilotFetchStudents()}
+}
+function pilotOverview(u){
+  const data=u.progress||pilotEmptyProgress();
+  const allowed=courses.flatMap(c=>c.topics.map(t=>t.id));
+  const done=Array.isArray(data.done)?[...new Set(data.done)].filter(x=>allowed.includes(x)):[];
+  const results=Object.values(data.quizzes||{}).filter(v=>v&&Number.isFinite(Number(v.percent)));
+  const average=results.length?Math.round(results.reduce((n,x)=>n+Number(x.percent),0)/results.length):null;
+  return {done,quizzes:data.quizzes||{},problems:Array.isArray(data.problems)?data.problems:[],labsDone:Array.isArray(data.labsDone)?data.labsDone:[],average,tests:results.length,pct:Math.round(done.length/Math.max(1,allowed.length)*100),total:allowed.length};
+}
+function pilotRenderCurator(){
+  const user=pilotActive();if(!user||user.role!=='curator')return;
+  const students=pilotUsers.filter(u=>u.role==='student');
+  const ov=students.map(u=>pilotOverview(u));
+  const started=ov.filter(x=>x.done.length||x.tests||x.problems.length||x.labsDone.length).length;
+  const scores=ov.filter(x=>x.average!=null).map(x=>x.average);
+  document.getElementById('pilotTotal').textContent=students.length;
+  document.getElementById('pilotStarted').textContent=started;
+  document.getElementById('pilotAverageProgress').textContent=(students.length?Math.round(ov.reduce((n,x)=>n+x.pct,0)/students.length):0)+'%';
+  document.getElementById('pilotAverageScore').textContent=scores.length?Math.round(scores.reduce((a,b)=>a+b,0)/scores.length)+'%':'—';
+  const search=document.getElementById('pilotSearch').value.trim().toLowerCase();
+  const status=document.getElementById('pilotStatus').value;
+  const visible=students.filter(u=>{
+    const p=pilotOverview(u), started=p.done.length||p.tests||p.problems.length||p.labsDone.length;
+    return (u.name+' '+u.email).toLowerCase().includes(search) &&
+      (status==='all'||(status==='started'&&started)||(status==='not-started'&&!started)||(status==='completed'&&p.pct===100));
+  });
+  const target=document.getElementById('pilotStudentTable');
+  if(!visible.length){target.innerHTML='<div class="pilot-empty">Әзірше топта оқушы жоқ. Оқушыларға куратор кодын беріңіз немесе демо оқушыларды қосыңыз.</div>';return}
+  target.innerHTML=`<table class="pilot-table"><thead><tr><th>Оқушы</th><th>Курс прогресі</th><th>Тесттер</th><th>Соңғы белсенділік</th><th></th></tr></thead><tbody>${visible.map(u=>{
+    const p=pilotOverview(u);
+    const date=u.lastActive?new Date(u.lastActive).toLocaleDateString('kk-KZ'):'—';
+    return `<tr><td><b>${pilotEscape(u.name)}</b>${u.isDemo?'<span class="pilot-demo-mark">(демо)</span>':''}<div class="small">${pilotEscape(u.email)}</div></td><td><b>${p.pct}%</b><div class="small">${p.done.length}/${p.total} тақырып</div><div class="pilot-meter"><span style="width:${p.pct}%"></span></div></td><td>${p.tests} тест<div class="small">${p.average==null?'Нәтиже жоқ':p.average+'% орташа'}</div></td><td>${date}</td><td><button class="pilot-open" onclick="pilotShowStudent('${u.id}')">Қарау →</button></td></tr>`;
+  }).join('')}</tbody></table>`;
+}
+function pilotShowStudent(id){
+  const curator=pilotActive();if(!curator||curator.role!=='curator')return;
+  const user=pilotUsers.find(u=>u.id===id&&u.role==='student');if(!user)return;
+  window.pilotSelectedStudent=id;
+  const p=pilotOverview(user);
+  const testList=courses.flatMap(c=>c.topics.map(t=>({course:c,topic:t,score:p.quizzes[t.id]}))).filter(x=>x.score).sort((a,b)=>new Date(b.score.date||0)-new Date(a.score.date||0));
+  const courseList=courses.map(c=>{const n=c.topics.filter(t=>p.done.includes(t.id)).length;const pc=Math.round(n/c.topics.length*100);return `<div class="pilot-course-row"><div style="display:flex;justify-content:space-between;gap:8px"><b>${pilotEscape(c.title)}</b><span>${n}/${c.topics.length} (${pc}%)</span></div><div class="pilot-meter"><span style="width:${pc}%"></span></div><small class="small">Өтілгендер: ${pilotEscape(c.topics.filter(t=>p.done.includes(t.id)).map(t=>t.title).join(', ')||'Әзірге жоқ')}</small></div>`}).join('');
+  const detail=document.getElementById('pilotStudentDetail');detail.hidden=false;
+  detail.innerHTML=`<div class="pilot-inline-actions" style="justify-content:space-between"><div><div class="tag">ОҚУШЫ КАРТОЧКАСЫ</div><h2 style="margin:7px 0">${pilotEscape(user.name)}</h2><div class="small">${pilotEscape(user.email)} · Тіркелгені: ${new Date(user.joined).toLocaleDateString('kk-KZ')}</div></div><button class="secondary" onclick="document.getElementById('pilotStudentDetail').hidden=true">Жабу ×</button></div>
+    <div class="pilot-detail-grid" style="margin-top:20px"><div><h3>Курстар бойынша прогресс</h3>${courseList}<p class="small">Шығарған есептері: <b>${p.problems.length}</b> · Зертханалар: <b>${p.labsDone.length}</b></p></div>
+    <div><h3>Тест нәтижелері</h3>${testList.length?`<ul class="pilot-detail-list">${testList.map(x=>`<li><b>${pilotEscape(x.topic.title)}</b><div class="small">${pilotEscape(x.course.title)} · ${x.score.score}/5 · ${Number(x.score.percent)||0}% · ${x.score.date?new Date(x.score.date).toLocaleDateString('kk-KZ'):'—'}</div></li>`).join('')}</ul>`:'<p class="small">Әзірге тест тапсырмаған.</p>'}</div></div>
+    <label style="font-weight:700" for="curatorNote">Куратордың бақылау жазбасы (дерекқорға сақталады)</label><textarea id="curatorNote" maxlength="1500" placeholder="Оқушының оқу барысына ескерту жазыңыз...">${pilotEscape(user.note||'')}</textarea><button class="primary" onclick="pilotSaveNote()">Жазбаны сақтау</button>`;
+  detail.scrollIntoView({behavior:'smooth',block:'start'});
+}
+async function pilotSaveNote(){
+  if(pilotActive()?.role!=='curator')return;
+  const id=window.pilotSelectedStudent;
+  const user=pilotUsers.find(x=>x.id===id&&x.role==='student');if(!user)return;
+  const note=document.getElementById('curatorNote').value.slice(0,1500);
+  try{await pilotApi('/api/students/'+encodeURIComponent(id)+'/note','PUT',{note});user.note=note;toast('Жазба дерекқорға сақталды')}
+  catch(e){toast(e.message)}
+}
+function pilotFileDownload(name,text,type){const url=URL.createObjectURL(new Blob([text],{type}));const a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),2000)}
+function pilotExportStudent(){
+  if(pilotActive()?.role!=='student'){openProfileModal();return}
+  pilotSaveCurrent();const u=pilotActive();
+  const report={format:'physix-student-report-v1',exportedAt:new Date().toISOString(),student:{name:u.name,email:u.email,role:'student',joined:u.joined,lastActive:u.lastActive,progress:u.progress}};
+  pilotFileDownload('PhysiX_'+u.email.replace(/[^a-z0-9_-]/gi,'_')+'.json',JSON.stringify(report,null,2),'application/json;charset=utf-8');toast('JSON есеп жүктелді');
+}
+function pilotExportCSV(){
+  if(pilotActive()?.role!=='curator')return;
+  const csvField=x=>{let v=String(x==null?'':x);if(/^[=+\-@]/.test(v))v="'"+v;return '"'+v.replace(/"/g,'""')+'"'};
+  const header=['Аты-жөні','Email','Аяқталған тақырып','Барлық тақырып','Прогресс %','Тест саны','Орташа тест %','Есептер','Зертханалар','Соңғы белсенділік'];
+  const rows=pilotUsers.filter(u=>u.role==='student').map(u=>{const p=pilotOverview(u);return [u.name,u.email,p.done.length,p.total,p.pct,p.tests,p.average??'',p.problems.length,p.labsDone.length,u.lastActive||'']});
+  pilotFileDownload('PhysiX_pilot_results.csv','\ufeff'+[header,...rows].map(r=>r.map(csvField).join(';')).join('\r\n'),'text/csv;charset=utf-8');
+}
+async function pilotAddDemoStudents(){
+  if(pilotActive()?.role!=='curator')return;
+  try{const result=await pilotApi('/api/curator/demo','POST');await pilotFetchStudents();toast(result.created?result.created+' демо оқушы қосылды':'Демо оқушылар әлдеқашан қосылған')}
+  catch(e){toast(e.message)}
+}
+
+const courses = [
+  {
+    id: "kinematics",
+    title: "1. Кинематика",
+    icon: "КН",
+    cls: "mech",
+    level: "Қозғалыс",
+    desc: "Денелердің қозғалысын, жылдамдығын, үдеуін және траекториясын зерттеу.",
+    topics: [
+      { id: "k1", title: "Механикалық қозғалыс және санақ жүйесі", content: "Механикалық қозғалыс — дененің басқа денелерге қатысты орнының уақыт өте өзгеруі. Қозғалысты сипаттау үшін санақ денесі, координаталар жүйесі және уақыт өлшейтін құрал қажет. Мысалы, қозғалып келе жатқан көліктің орны жол жиегіне қатысты өзгереді." },
+      { id: "k2", title: "Материялық нүкте, траектория", content: "Өлшемін берілген есепте елемеуге болатын дене материялық нүкте деп қарастырылады. Траектория — дене қозғалған кезде сызып өтетін сызық. Траектория түзу немесе қисық болуы мүмкін." },
+      { id: "k3", title: "Жол және орын ауыстыру", content: "Жол — дене жүріп өткен траекторияның ұзындығы, скаляр шама. Орын ауыстыру — бастапқы орынды соңғы орынмен қосатын бағытталған кесінді, векторлық шама. Қозғалыс тұйық жолмен аяқталса, орын ауыстыру нөлге тең болуы мүмкін." },
+      { id: "k4", title: "Бірқалыпты және бірқалыпсыз қозғалыс", content: "Бірқалыпты қозғалыста дене тең уақыт аралықтарында бірдей жол жүреді. Оның жылдамдығы тұрақты: v = s/t. Бірқалыпсыз қозғалыста жылдамдық уақыт бойынша өзгереді." },
+      { id: "k5", title: "Жылдамдық және үдеу", content: "Жылдамдық дененің орын ауыстыруының уақытқа қатынасын сипаттайды: v = s/t. Үдеу — жылдамдықтың өзгеру шапшаңдығы: a = (v − v₀)/t. Бірқалыпты үдемелі қозғалыс үшін v = v₀ + at және s = v₀t + at²/2 формулалары қолданылады." },
+      { id: "k6", title: "Түзусызықты және қисықсызықты қозғалыс", content: "Түзусызықты қозғалыста траектория түзу сызық болады. Қисықсызықты қозғалыста траектория қисық болады. Қисық траекториямен қозғалғанда дененің жылдамдық бағыты өзгеруі мүмкін." },
+      { id: "k7", title: "Еркін түсу", content: "Еркін түсу — ауа кедергісін елемегенде дененің тек ауырлық күшінің әсерінен қозғалысы. Жер бетіне жақын еркін түсу үдеуі шамамен g = 9,8 м/с². Бастапқы жылдамдық нөл болғанда h = gt²/2 формуласын қолдануға болады." },
+      { id: "k8", title: "Шеңбер бойымен қозғалыс", content: "Шеңбер бойымен қозғалыс кезінде дене шеңбер траекториясымен қозғалады. Айналу периоды T — бір толық айналым уақыты, жиілік ν = 1/T. Сызықтық жылдамдық пен бұрыштық жылдамдықтың байланысы: v = ωr." }
+    ]
+  },
+  {
+    id: "dynamics",
+    title: "2. Динамика",
+    icon: "ДН",
+    cls: "elec",
+    level: "Күштер",
+    desc: "Қозғалыстың себептері, күштер және Ньютон заңдары.",
+    topics: [
+      { id: "d1", title: "Ньютонның бірінші заңы — инерция заңы", content: "Егер денеге басқа денелер әсер етпесе немесе әсерлер теңгерілсе, дене тыныштық күйін сақтайды немесе түзу сызықты бірқалыпты қозғалады. Бұл қасиет инерция деп аталады." },
+      { id: "d2", title: "Ньютонның екінші заңы", content: "Дененің үдеуі қорытқы күшке тура, массаға кері пропорционал. Формуласы: F = ma. Мұнда F — қорытқы күш (Н), m — масса (кг), a — үдеу (м/с²)." },
+      { id: "d3", title: "Ньютонның үшінші заңы", content: "Екі дене өзара әрекеттескенде, олардың бір-біріне әсер ететін күштері модульдері бойынша тең, бағыттары қарама-қарсы болады. Бұл күштер әртүрлі денелерге әсер етеді." },
+      { id: "d4", title: "Масса және күш", content: "Масса дененің инерттілігін сипаттайды және килограммен өлшенеді. Күш — денелердің өзара әрекеттесуін сипаттайтын векторлық шама, өлшем бірлігі — ньютон (Н). Күш дененің қозғалысын немесе пішінін өзгерте алады." },
+      { id: "d5", title: "Ауырлық күші", content: "Жер денелерді өзіне тартады. Жер бетіне жақын ауырлық күшінің модулі Fа = mg формуласымен есептеледі. Мұнда g ≈ 9,8 м/с²." },
+      { id: "d6", title: "Серпімділік күші", content: "Дене деформацияланғанда бастапқы пішінін қалпына келтіруге бағытталған серпімділік күші пайда болады. Серпімді деформация үшін Гук заңы қолданылады: Fсерп = kx, мұнда k — қатаңдық, x — ұзару немесе сығылу шамасы." },
+      { id: "d7", title: "Үйкеліс күші", content: "Үйкеліс күші жанасатын беттердің салыстырмалы қозғалысына немесе қозғалу әрекетіне қарсы бағытталады. Сырғанау үйкелісінің қарапайым моделі: Fүйк = μN. Үйкеліс тежегіштерде пайдалы, ал қозғалатын бөлшектерде энергия шығынын тудыруы мүмкін." },
+      { id: "d8", title: "Бүкіләлемдік тартылыс заңы", content: "Кез келген екі дене бір-бірін тартады. Тартылыс күші массалар көбейтіндісіне тура, олардың арақашықтығының квадратына кері пропорционал: F = Gm₁m₂/r²." },
+      { id: "d9", title: "Салмақ және салмақсыздық", content: "Дененің тірекке немесе аспаға түсіретін күші салмақ деп аталады. Тыныштықта немесе бірқалыпты қозғалыста тірекке қатысты салмақ көбіне P = mg болады. Еркін түсу кезінде дененің тірекке әсері болмағандықтан салмақсыздық байқалады." }
+    ]
+  },
+  {
+    id: "statics",
+    title: "3. Статика",
+    icon: "СТ",
+    cls: "mol",
+    level: "Тепе-теңдік",
+    desc: "Күштердің тепе-теңдігі, күш моменті және механизмдердің орнықтылығы.",
+    topics: [
+      { id: "s1", title: "Күштердің тепе-теңдігі", content: "Дене ілгерілемелі тепе-теңдікте болуы үшін оған әсер ететін барлық күштердің векторлық қосындысы нөлге тең болуы керек: ΣF = 0. Есеп шығарғанда күштердің бағытын сызбада көрсету маңызды." },
+      { id: "s2", title: "Күш моменті", content: "Күш моменті күштің денені айналдыру әсерін сипаттайды. Күш иіні күш бағыты мен айналу осі арасындағы ең қысқа қашықтық болса, M = F·l. Өлшем бірлігі — Н·м." },
+      { id: "s3", title: "Иіндік және иіндік ережесі", content: "Иіндік — тірек нүктесінің айналасында айнала алатын қатты дене. Тепе-теңдік кезінде сағат тілі бағытымен және оған қарсы бағытталған күш моменттері тең: F₁l₁ = F₂l₂. Ұзын иін аз күшпен үлкен күш моментін алуға мүмкіндік береді." },
+      { id: "s4", title: "Денелердің тепе-теңдік шарттары", content: "Қатты дененің толық тепе-теңдігі үшін қорытқы күш те, кез келген оське қатысты қорытқы күш моменті де нөлге тең болуы керек: ΣF = 0 және ΣM = 0. Бұл шарттар тіректерді, арқалықтарды және конструкцияларды есептеуде қолданылады." },
+      { id: "s5", title: "Механизмдердің тепе-теңдігі", content: "Механизм тепе-теңдікте болуы үшін оған әсер ететін күштер мен моменттер өзара теңгерілуі қажет. Иінтірек, блок, көтергіш және әртүрлі тірек жүйелерін талдағанда күштің шамасы, бағыты, иіні және тірек реакциясы ескеріледі." }
+    ]
+  }
+];
+
+
+const lessonDetails = {
+  "k1": {
+    explanation: "Механикалық қозғалыс деп дененің басқа денелерге қатысты орнының уақыт өте өзгеруін айтады. Қозғалысты сипаттау үшін санақ денесі, координаталар жүйесі және уақытты өлшейтін құрал таңдалады. Бұл үш элемент санақ жүйесін құрайды. Дененің қозғалысы таңдалған санақ жүйесіне тәуелді болады.",
+    history: "Галилей қозғалысты тәжірибелік зерттеуге үлес қосты. Ньютон механикалық қозғалысты сипаттайтын негізгі заңдарды жүйеледі.",
+    formulas: "x = x₀ + vt; Δx = x − x₀.",
+    example: "Автобус 10 секунд ішінде 120 м жүрсе, оның осы уақыттағы орташа жылдамдығы 120/10 = 12 м/с болады.",
+    videoQuery: "механикалық қозғалыс санақ жүйесі физика"
+  },
+
+  "k2": {
+    explanation: "Материялық нүкте — өлшемі мен пішіні қарастырылып отырған есептің шартына әсер етпейтін дененің моделі. Дененің қозғалысын сипаттағанда оның өлшемдерін елемеуге болатын жағдайларда осы модель қолданылады. Траектория — дененің қозғалыс кезінде басып өтетін сызығы. Траектория түзу немесе қисық болуы мүмкін.",
+    history: "Материялық нүкте моделі классикалық механикада күрделі денелердің қозғалысын қарапайым түрде зерттеу үшін қолданылады.",
+    formulas: "Координата: x = x(t). Траекторияның пішініне қарай қозғалыс түзусызықты және қисықсызықты болып бөлінеді.",
+    example: "Қалааралық сапарда автомобильді материялық нүкте ретінде қарастыруға болады. Ал автотұраққа орналастырғанда автомобильдің ұзындығы мен ені ескеріледі.",
+    videoQuery: "материялық нүкте траектория физика"
+  },
+
+  "k3": {
+    explanation: "Жол — дене траекториясының ұзындығына тең физикалық шама. Ол скаляр шама болып табылады. Орын ауыстыру дененің бастапқы орнын соңғы орнымен қосатын бағытталған вектормен сипатталады. Жүрілген жол орын ауыстырудың модулінен кем болмайды. Дене бастапқы орнына оралса, оның орын ауыстыруы нөлге тең болады.",
+    history: "Жол мен орын ауыстыру кинематиканың негізгі ұғымдарына жатады және дене қозғалысын сандық сипаттау үшін қолданылады.",
+    formulas: "s = vt (бірқалыпты қозғалыста); Δx = x₂ − x₁; s ≥ |Δx|.",
+    example: "Оқушы 3 м шығысқа, одан кейін 3 м батысқа жүрді. Оның жолы 6 м, ал орын ауыстыруы 0 м.",
+    videoQuery: "жол және орын ауыстыру физика есептер"
+  },
+
+  "k4": {
+    explanation: "Бірқалыпты қозғалыс кезінде дене тең уақыт аралықтарында бірдей жол жүреді және оның жылдамдығы тұрақты болады. Бірқалыпсыз қозғалыста дененің жылдамдығы уақыт бойынша өзгереді. Орташа жылдамдық толық жүрілген жолдың қозғалыс уақытына қатынасымен анықталады. Қозғалысты кестелер және графиктер арқылы да зерттеуге болады.",
+    history: "Галилейдің қозғалыс заңдылықтарын зерттеуі бірқалыпты және үдемелі қозғалыс туралы түсініктердің дамуына негіз болды.",
+    formulas: "v = s/t; s = vt; vорт = sжалпы/tжалпы.",
+    example: "Автомобиль 2 сағатта 100 км жүрсе, оның орташа жылдамдығы 50 км/сағ болады.",
+    videoQuery: "бірқалыпты бірқалыпсыз қозғалыс жылдамдық графигі"
+  },
+
+  "k5": {
+    explanation: "Жылдамдық дененің орнының уақыт бойынша өзгеруін сипаттайды. Үдеу жылдамдықтың уақыт бойынша өзгеру шапшаңдығын көрсетеді. Егер жылдамдық өзгермесе, үдеу нөлге тең болады. Тұрақты үдеумен қозғалатын дененің жылдамдығы мен орын ауыстыруын уақыт арқылы есептеуге болады.",
+    history: "Галилей үдемелі қозғалысты зерттеді, ал Ньютон қозғалыстың өзгеруін күшпен байланыстыратын заңды тұжырымдады.",
+    formulas: "vорт = s/t; a = (v − v₀)/t; v = v₀ + at; s = v₀t + at²/2; v² − v₀² = 2as.",
+    example: "Дене тыныштықтан 2 м/с² тұрақты үдеумен 5 секунд қозғалса, соңғы жылдамдығы 10 м/с, ал орын ауыстыруы 25 м болады.",
+    videoQuery: "жылдамдық үдеу формулалары есептер"
+  },
+
+  "k6": {
+    explanation: "Түзусызықты қозғалыста дененің траекториясы түзу сызық болады. Қисықсызықты қозғалыста дене қисық траектория бойымен қозғалады. Мұндай қозғалыста жылдамдық векторының бағыты өзгеруі мүмкін. Сондықтан жылдамдықтың шамасы тұрақты болған жағдайда да денеде үдеу болуы ықтимал.",
+    history: "Қисықсызықты қозғалысты зерттеу классикалық механиканың, астрономияның және техникадағы қозғалысты есептеу әдістерінің дамуына ықпал етті.",
+    formulas: "vорт = s/t; шеңбер бойымен қозғалғанда aц = v²/r.",
+    example: "Автомобиль бұрылыстан тұрақты жылдамдықпен өтсе де, жылдамдық бағыты өзгеретіндіктен центрге тартқыш үдеу пайда болады.",
+    videoQuery: "түзусызықты қисықсызықты қозғалыс"
+  },
+
+  "k7": {
+    explanation: "Еркін түсу деп дененің ауа кедергісін елемегенде тек ауырлық күшінің әсерінен қозғалуын айтады. Жер бетіне жақын жерде еркін түсу үдеуі шамамен 9,8 м/с²-қа тең және төмен қарай бағытталады. Бастапқы жылдамдықсыз түскен дененің жылдамдығы мен жүрген жолы уақытқа тәуелді өзгереді.",
+    history: "Галилей еркін түсу заңдылықтарын зерттеді. Ньютонның бүкіләлемдік тартылыс заңы ауырлық құбылысын түсіндіруге мүмкіндік берді.",
+    formulas: "v = gt; h = gt²/2; t = √(2h/g); v² = 2gh. Бұл формулалар дене тыныштықтан түскен жағдайда қолданылады.",
+    example: "Дене 20 м биіктіктен бастапқы жылдамдықсыз құласа, түсу уақыты t = √(40/9,8) ≈ 2,02 с болады.",
+    videoQuery: "еркін түсу үдеуі есептер физика"
+  },
+
+  "k8": {
+    explanation: "Шеңбер бойымен қозғалыста дене шеңбер тәрізді траекториямен қозғалады. Бір толық айналымға жұмсалған уақыт период деп аталады. Бір секундтағы айналымдар саны жиілікті анықтайды. Бұрыштық жылдамдық дененің айналу бұрышының уақыт бойынша өзгеруін сипаттайды. Центрге тартқыш үдеу шеңбердің орталығына бағытталады.",
+    history: "Шеңберлік қозғалыс заңдылықтары классикалық механикада дамытылып, планеталар қозғалысын және айналмалы механизмдерді зерттеуде қолданыла бастады.",
+    formulas: "T = t/N; ν = N/t = 1/T; ω = 2π/T; v = ωr; aц = v²/r = ω²r.",
+    example: "Радиусы 0,5 м дөңгелек секундына 2 айналым жасаса, оның шетіндегі нүктенің жылдамдығы v = 2πrν = 2π м/с болады.",
+    videoQuery: "шеңбер бойымен қозғалыс период жиілік"
+  },
+
+  "d1": {
+    explanation: "Инерция — дененің өзінің тыныштық күйін немесе түзу сызықты бірқалыпты қозғалысын сақтауға ұмтылуын сипаттайтын қасиет. Инерциялық санақ жүйесінде денеге әсер ететін қорытқы күш нөл болса, оның үдеуі де нөлге тең болады. Дененің қозғалыс күйін өзгерту үшін қорытқы күш қажет.",
+    history: "Галилей инерция туралы түсініктің дамуына үлес қосты. Ньютон бұл қағиданы механиканың бірінші заңы ретінде тұжырымдады.",
+    formulas: "ΣF = 0 ⇒ a = 0; v = const.",
+    example: "Тыныштықта тұрған кітапқа ауырлық күші мен тіректің реакция күші қарама-қарсы бағытта әсер етіп, бірін-бірі теңгерсе, кітап тыныштықта қалады.",
+    videoQuery: "Ньютонның бірінші заңы инерция заңы"
+  },
+
+  "d2": {
+    explanation: "Ньютонның екінші заңы дененің үдеуі оған әсер ететін қорытқы күшке тура, ал массасына кері пропорционал екенін көрсетеді. Үдеудің бағыты қорытқы күштің бағытымен сәйкес келеді. Денеге бірнеше күш әсер еткенде олардың векторлық қосындысы анықталады. Бұл заң дененің қозғалысын есептеуге мүмкіндік береді.",
+    history: "Исаак Ньютон қозғалыс заңдарын 1687 жылы жарық көрген «Табиғи философияның математикалық бастамалары» еңбегінде баяндады.",
+    formulas: "ΣF = ma; a = ΣF/m; 1 Н = 1 кг·м/с².",
+    example: "Массасы 4 кг денеге 12 Н қорытқы күш әсер етсе, оның үдеуі a = 12/4 = 3 м/с² болады.",
+    videoQuery: "Ньютонның екінші заңы есептер күш масса үдеу"
+  },
+
+  "d3": {
+    explanation: "Ньютонның үшінші заңы бойынша өзара әрекеттесетін екі дене бір-біріне модульдері тең, бағыттары қарама-қарсы күштермен әсер етеді. Бұл күштер әртүрлі денелерге түседі. Сондықтан оларды бір денеге әсер ететін күштер сияқты өзара теңгерілген деп қарастыруға болмайды.",
+    history: "Ньютонның үшінші заңы классикалық механикадағы өзара әрекеттесудің негізгі қағидаларының бірі болып саналады.",
+    formulas: "F₁₂ = −F₂₁.",
+    example: "Адам қабырғаны қолымен итергенде, қабырға да адамның қолына шамасы тең, қарама-қарсы бағытталған күшпен әсер етеді.",
+    videoQuery: "Ньютонның үшінші заңы мысалдар"
+  },
+
+  "d4": {
+    explanation: "Масса — дененің инерттілігін сипаттайтын физикалық шама. Оның SI жүйесіндегі өлшем бірлігі — килограмм. Күш денелердің өзара әрекеттесуін сипаттайтын векторлық шама болып табылады. Күш әсерінен дененің жылдамдығы немесе пішіні өзгеруі мүмкін. Күштің SI жүйесіндегі өлшем бірлігі — ньютон.",
+    history: "Ньютон механикасында масса, күш және үдеу өзара байланыстырылып, денелер қозғалысын есептеу әдістері қалыптасты.",
+    formulas: "F = ma; Fа = mg; ΣF — денеге әсер ететін күштердің қорытқысы.",
+    example: "Массасы 2 кг денеге Жер бетіне жақын жерде Fа = 2 × 9,8 = 19,6 Н ауырлық күші әсер етеді.",
+    videoQuery: "масса күш өлшем бірлігі ньютон"
+  },
+
+  "d5": {
+    explanation: "Ауырлық күші — Жердің денені өзіне тартуы нәтижесінде пайда болатын күш. Жер бетіне жақын жерде оның шамасы дененің массасы мен еркін түсу үдеуінің көбейтіндісіне тең. Ауырлық күші Жердің орталығына қарай бағытталады. Еркін түсу үдеуі басқа аспан денелерінде өзгеше болғандықтан, ауырлық күшінің шамасы да өзгереді.",
+    history: "Ньютон бүкіләлемдік тартылыс заңын тұжырымдап, Жердегі денелер мен аспан денелерінің қозғалысын ортақ гравитациялық заңмен түсіндірді.",
+    formulas: "Fа = mg; Жер бетіне жақын жерде g ≈ 9,8 м/с².",
+    example: "Массасы 5 кг денеге әсер ететін ауырлық күші Fа = 5 × 9,8 = 49 Н.",
+    videoQuery: "ауырлық күші формула есеп"
+  },
+
+  "d6": {
+    explanation: "Серпімділік күші дене деформацияланған кезде пайда болып, денені бастапқы пішініне қайтаруға бағытталады. Серіппенің серпімді деформациясы кезінде күштің шамасы деформация мөлшеріне пропорционал болады. Бұл тәуелділік Гук заңымен сипатталады. Заң серіппенің серпімділік шегінен аспайтын жағдайларда қолданылады.",
+    history: "Роберт Гук серпімді денелердің деформациясы мен оған әсер ететін күш арасындағы байланысты зерттеді.",
+    formulas: "Fсерп = kx; мұнда k — серіппенің қатаңдығы, x — деформация шамасы. Күштің бағыты деформацияға қарсы.",
+    example: "Қатаңдығы 200 Н/м серіппе 0,03 м-ге созылса, серпімділік күшінің шамасы F = 200 × 0,03 = 6 Н болады.",
+    videoQuery: "Гук заңы серпімділік күші тәжірибе"
+  },
+
+  "d7": {
+    explanation: "Үйкеліс күші жанасатын денелердің салыстырмалы қозғалысына немесе қозғалу әрекетіне қарсы бағытталады. Үйкеліс денелердің сырғанауына кедергі келтіреді, жүруге және көлік қозғалысын тежеуге мүмкіндік береді. Сырғанау үйкелісінің қарапайым моделінде оның шамасы нормаль реакция күшіне және беттердің қасиеттеріне тәуелді.",
+    history: "Леонардо да Винчи, Гийом Амонтон және Шарль Кулон үйкеліс құбылысын зерттеуге үлес қосты.",
+    formulas: "Fүйк = μN; горизонталь бетте, басқа тік күштер болмағанда, N = mg. μ — үйкеліс коэффициенті.",
+    example: "Үйкеліс коэффициенті μ = 0,2, ал нормаль реакция күші N = 50 Н болса, сырғанау үйкелісінің шамасы 10 Н болады.",
+    videoQuery: "үйкеліс күші коэффициенті есептер"
+  },
+
+  "d8": {
+    explanation: "Бүкіләлемдік тартылыс заңы кез келген екі дененің бір-бірін тартатынын сипаттайды. Тартылыс күші денелер массаларының көбейтіндісіне тура, ал олардың центрлері арасындағы арақашықтықтың квадратына кері пропорционал. Бұл заң планеталардың, серіктердің және басқа ғарыштық денелердің қозғалысын зерттеуде қолданылады.",
+    history: "Исаак Ньютон бүкіләлемдік тартылыс заңын классикалық механиканың маңызды заңдарының бірі ретінде тұжырымдады.",
+    formulas: "F = Gm₁m₂/r²; G ≈ 6,67 × 10⁻¹¹ Н·м²/кг².",
+    example: "Екі дененің арасындағы арақашықтық екі есе артса, олардың арасындағы тартылыс күші бастапқы күштің төрттен біріне тең болады.",
+    videoQuery: "бүкіләлемдік тартылыс заңы Ньютон"
+  },
+
+  "d9": {
+    explanation: "Дененің салмағы — дененің ауырлық әсерінен тірекке немесе аспаға түсіретін күші. Ауырлық күші денеге әсер етеді, ал салмақ тірекке немесе аспаға түседі. Дене тыныштықта немесе тірекке қатысты үдеусіз қозғалғанда салмақтың шамасы mg-ге тең. Еркін түсу кезінде дене тірекке қысым түсірмейтіндіктен салмақсыздық күйі байқалады.",
+    history: "Салмақ пен салмақсыздық ұғымдары классикалық механикада зерттеледі және ғарыш аппараттарының қозғалысын түсіндіруде маңызды.",
+    formulas: "P = mg (үдеусіз жағдайда); P = m(g + a) (тірек жоғары үдегенде); P = m(g − a) (тірек төмен үдегенде, еркін түсуге дейін).",
+    example: "Массасы 60 кг адам тыныштықта тұрған кезде оның салмағы P = 60 × 9,8 = 588 Н болады.",
+    videoQuery: "салмақ салмақсыздық формула физика"
+  },
+
+  "s1": {
+    explanation: "Күштердің тепе-теңдігі денеге әсер ететін барлық күштердің векторлық қосындысы нөлге тең болғанда орындалады. Мұндай жағдайда дененің ілгерілемелі үдеуі нөл болады. Есеп шығарғанда күштерді координата осьтері бойынша жіктеп, әр бағыттағы күштердің қосындысын жеке анықтауға болады.",
+    history: "Статикадағы күштердің тепе-теңдік шарттары Ньютон заңдарына негізделеді және инженерлік құрылымдарды есептеуде пайдаланылады.",
+    formulas: "ΣF = 0; ΣFₓ = 0; ΣFᵧ = 0.",
+    example: "Үстелде тыныш жатқан кітапқа төмен қарай ауырлық күші, жоғары қарай тіректің реакция күші әсер етеді. Бұл күштер тең болса, олардың қорытқысы нөлге тең.",
+    videoQuery: "күштердің тепе теңдігі есептер"
+  },
+
+  "s2": {
+    explanation: "Күш моменті күштің денені белгілі бір оське қатысты айналдыру әсерін сипаттайды. Оның шамасы күшке және күш иініне тәуелді. Күш иіні деп айналу осінен күштің әсер ету сызығына дейінгі перпендикуляр қашықтықты айтады. Күш моментінің SI жүйесіндегі өлшем бірлігі — Н·м.",
+    history: "Архимед иіндік пен тепе-теңдік қағидаларын зерттеп, механиканың дамуына үлес қосты.",
+    formulas: "M = F·l; мұнда l — күш иіні.",
+    example: "20 Н күш айналу осінен 0,3 м қашықтықта перпендикуляр әсер етсе, күш моменті M = 20 × 0,3 = 6 Н·м болады.",
+    videoQuery: "күш моменті Архимед есептер"
+  },
+
+  "s3": {
+    explanation: "Иіндік — тірек нүктесінің айналасында айнала алатын қатты дене. Иіндік күштің шамасын өзгертуге мүмкіндік береді. Оның тепе-теңдігі үшін айналу бағыты бойынша қарама-қарсы әсер ететін күш моменттерінің қосындылары тең болуы керек. Иіндік таразыда, қайшыда және басқа қарапайым механизмдерде қолданылады.",
+    history: "Архимед иіндік қағидасын зерттеп, күш пен иін ұзындығы арасындағы байланысты сипаттаған.",
+    formulas: "F₁l₁ = F₂l₂ (тепе-теңдіктегі идеал иіндік үшін).",
+    example: "Бір иінге 10 Н күш 0,5 м қашықтықта түссе, екінші иіні 0,1 м болғанда тепе-теңдік үшін 50 Н күш қажет.",
+    videoQuery: "иіндік ережесі Архимед есеп"
+  },
+
+  "s4": {
+    explanation: "Қатты дененің толық статикалық тепе-теңдігі үшін денеге әсер ететін күштердің қорытқысы да, кез келген таңдалған оське қатысты күш моменттерінің қорытқысы да нөлге тең болуы керек. Бірінші шарт ілгерілемелі үдеудің, екінші шарт айналмалы үдеудің болмауын сипаттайды. Бұл шарттар құрылыс конструкцияларын және механизмдерді есептеуде қолданылады.",
+    history: "Статика ежелгі механикадан бастау алып, Архимедтің еңбектері арқылы дамыды. Қазіргі инженерияда тепе-теңдік шарттары құрылымдарды есептеудің негізі болып табылады.",
+    formulas: "ΣF = 0; ΣM = 0.",
+    example: "Екі тірекке қойылған арқалықта жүктің салмағы тірек реакцияларымен теңгеріледі. Сонымен бірге тіректерге қатысты күш моменттерінің қосындысы нөл болуы қажет.",
+    videoQuery: "қатты дене тепе теңдік шарттары статика"
+  },
+
+  "s5": {
+    explanation: "Механизмдердің тепе-теңдігін зерттеу үшін әр бөлшекке әсер ететін күштер мен күш моменттері анықталады. Иіндік пен блок күштің бағытын өзгертуге немесе жүктi көтеруге қажетті күшті азайтуға мүмкіндік береді. Идеал механизм жұмыстан ұтыс бермейді: күш азайған жағдайда күш түсірілетін жол ұзарады. Нақты механизмдерде үйкеліс пен бөлшектердің салмағы ескеріледі.",
+    history: "Иіндік пен блок сияқты қарапайым механизмдер ежелден қолданылған. Архимед олардың механикалық артықшылықтарын түсіндіруге үлес қосты.",
+    formulas: "ΣF = 0; ΣM = 0; иіндік үшін F₁l₁ = F₂l₂.",
+    example: "Жүк көтеретін механизм ұзын иін арқылы қажетті күшті азайта алады. Бірақ жүктің тепе-теңдігін сақтау үшін күш пен иін ұзындығының арақатынасы орындалуы керек.",
+    videoQuery: "механизмдер тепе теңдігі иіндік блоктар"
+  }
+};
+
+
+const lessonVideos = {
+  k1: "https://www.youtube-nocookie.com/embed/eb25e1Bmjz0",
+  k2: "https://www.youtube-nocookie.com/embed/RtV7FyERBu0",
+  k3: "https://www.youtube-nocookie.com/embed/Ty6VsQKonBA",
+  k4: "https://www.youtube-nocookie.com/embed/MwgyuQvslN8",
+  k5: "https://www.youtube-nocookie.com/embed/kC7kXlKudtI",
+  k6: "https://www.youtube-nocookie.com/embed/BsTCfDBZ1j8",
+  k7: "https://www.youtube-nocookie.com/embed/Px9Tidqtrw4",
+  k8: "https://www.youtube-nocookie.com/embed/a8tJVNmAH6M",
+
+  d1: "https://www.youtube-nocookie.com/embed/ciuNN2N7Qwc",
+  d2: "https://www.youtube-nocookie.com/embed/FdWYuQFM-N0",
+  d3: "https://www.youtube-nocookie.com/embed/FdWYuQFM-N0",
+  d4: "https://www.youtube-nocookie.com/embed/v___BUlHb_8",
+  d5: "https://www.youtube-nocookie.com/embed/4jjcPxiKGmk",
+  d6: "https://www.youtube-nocookie.com/embed/vx8WrN0wvhE",
+  d7: "https://www.youtube-nocookie.com/embed/25qb1YjJi4E",
+  d8: "https://www.youtube-nocookie.com/embed/uQAYdZTtqng",
+  d9: "https://www.youtube-nocookie.com/embed/X7F-D38eDBo",
+
+  s1: "https://www.youtube-nocookie.com/embed/S7ouTlL8VDY",
+  s2: "https://www.youtube-nocookie.com/embed/jfBImUcWuOs",
+  s3: "https://www.youtube-nocookie.com/embed/DCMy5pfYEew",
+  s4: "https://www.youtube-nocookie.com/embed/13n8M-IVa6w",
+  s5: "https://www.youtube-nocookie.com/embed/HdX536ZFMzM"
+};
+
+function escapeHtml(value) {
+  return String(value ?? "").replace(/[&<>"']/g, ch => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+  }[ch]));
+}
+
+function buildTopicQuiz(topic, d) {
+  const allTopics = courses.flatMap(c => c.topics);
+  const allDetails = allTopics.map(t => ({ topic: t, detail: lessonDetails[t.id] || {} }));
+  const otherTopics = allTopics.filter(t => t.id !== topic.id);
+  const otherDetails = allDetails.filter(x => x.topic.id !== topic.id);
+  const firstSentence = (text) => String(text || "").split(/[.!?]/)[0].trim() + ".";
+  const scientistAnswer = firstSentence(d.history || "Бұл тақырып механиканың дамуы барысында зерттелді.");
+  const explanationAnswer = firstSentence(d.explanation || topic.content);
+  const formulaAnswer = d.formulas || "Формула тақырыпқа байланысты таңдалады.";
+  const exampleAnswer = d.example || "Берілген шамаларды анықтап, формуланы қолдану керек.";
+
+  function choices(correct, distractors) {
+    const unique = [...new Set([correct, ...distractors.filter(x => x && x !== correct)])].slice(0, 4);
+    while (unique.length < 4) unique.push(["Қозғалыс бағыты ғана есептеледі.", "Барлық шамалар өлшем бірліксіз алынады.", "Формула орнына тек сурет қолданылады."][unique.length - 1] || "Есептің шарты ескерілмейді.");
+    // Correct answer is shuffled to a predictable but varied position based on topic id.
+    const shift = (topic.id.charCodeAt(topic.id.length - 1) || 0) % unique.length;
+    return unique.slice(shift).concat(unique.slice(0, shift)).map((label, index) => ({
+      label, correct: label === correct, value: "q" + index
+    }));
+  }
+
+  const otherDefinitions = otherTopics.map(t => firstSentence((lessonDetails[t.id] || {}).explanation || t.content));
+  const otherFormulas = otherDetails.map(x => x.detail.formulas).filter(Boolean);
+  const otherHistories = otherDetails.map(x => firstSentence(x.detail.history)).filter(Boolean);
+  const otherExamples = otherDetails.map(x => x.detail.example).filter(Boolean);
+
+  return [
+    { question: "1. Осы тақырыптың негізгі мазмұны қайсы?", options: choices(explanationAnswer, otherDefinitions) },
+    { question: "2. Тақырыпқа сәйкес келетін формуланы таңда.", options: choices(formulaAnswer, otherFormulas) },
+    { question: "3. Тарихи мәліметке сәйкес келетін тұжырымды таңда.", options: choices(scientistAnswer, otherHistories) },
+    { question: "4. Сабақтағы есеп/мысал мазмұны қайсы?", options: choices(exampleAnswer, otherExamples) },
+    { question: "5. Физикалық есепті дұрыс шығарудың тиімді реті қайсы?", options: choices(
+      "Берілгенін жазу → формуланы таңдау → мәндерді қою → өлшем бірлігімен жауап беру.",
+      [
+        "Алдымен жауапты болжау → өлшем бірлігін елемеу → кез келген формуланы жазу.",
+        "Формуланы таңдамай сандарды қосу → берілген шамаларды соңынан іздеу.",
+        "Тек сандық жауапты жазу → есептің шартын және өлшем бірлігін тексермеу."
+      ]
+    ) }
+  ];
+}
+
+function buildLessonContent(course, topic) {
+  const d = lessonDetails[topic.id] || {};
+  const formula = d.formulas || "Бұл тақырыпта формуланы есептің шартына қарай таңдаңыз.";
+  const videoUrl = lessonVideos[topic.id] || "";
+  const quiz = buildTopicQuiz(topic, d);
+  const scoreData = quizScores[topic.id];
+  const quizMarkup = quiz.map((q, qi) => `
+    <fieldset class="quiz-question">
+      <legend>${escapeHtml(q.question)}</legend>
+      ${q.options.map((opt, oi) => `
+        <label class="quiz-option">
+          <input type="radio" name="${topic.id}_${qi}" value="${escapeHtml(opt.value)}" required>
+          <span>${escapeHtml(opt.label)}</span>
+        </label>`).join("")}
+    </fieldset>`).join("");
+
+  return `
+    <article class="lesson-article">
+      <div class="lesson-intro">
+        <span class="lesson-eyebrow">${escapeHtml(course.level)} · ОҚУ МАТЕРИАЛЫ</span>
+        <h2>${escapeHtml(topic.title)}</h2>
+        <p>${escapeHtml(topic.content)}</p>
+      </div>
+      <section class="lesson-section"><h2>📘 Тақырыптың толық түсіндірмесі</h2><p>${escapeHtml(d.explanation || topic.content)}</p><p>${escapeHtml(topic.content)}</p></section>
+      <section class="lesson-section history-section"><h2>🧑‍🔬 Тарихы және ғалымдар</h2><p>${escapeHtml(d.history || "Бұл тақырып механиканың дамуы барысында тәжірибе мен бақылаулар арқылы қалыптасты.")}</p></section>
+      <section class="lesson-section formula-section"><h2>📐 Негізгі формулалар</h2><div class="formula-box">${escapeHtml(formula)}</div><p><b>Өлшем бірліктері:</b> ұзындық — метр (м), уақыт — секунд (с), масса — килограмм (кг), күш — ньютон (Н). Есепте берілгендерді SI жүйесіне келтір.</p></section>
+      <section class="lesson-section example-section"><h2>📝 Есеп шығару үлгісі</h2><p>${escapeHtml(d.example || "Есептің берілген шамаларын анықтап, сәйкес формуланы таңдап, өлшем бірліктерін тексеріңіз.")}</p><div class="solution-steps"><span>01 · Берілгенін жаз</span><span>02 · Формуланы таңда</span><span>03 · Мәндерді қой</span><span>04 · Жауапты тексер</span></div></section>
+     
+      <section class="lesson-section video-section">
+        <h2>▶ Видеосабақ</h2>
+        <div class="video-frame">
+          ${
+            videoUrl
+              ? `<iframe
+                  title="${escapeHtml(topic.title)} видеосабағы"
+                  src="${videoUrl}"
+                  loading="lazy"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerpolicy="strict-origin-when-cross-origin"
+                  allowfullscreen>
+                </iframe>`
+              : `<p>Бұл тақырыпқа бейнесабақ қосылмаған.</p>`
+          }
+        </div>
+      </section>
+
+      <section class="lesson-section quiz-section">
+        <div class="quiz-heading"><div><span class="lesson-eyebrow">БІЛІМДІ ТЕКСЕРУ</span><h2>🧠 Қысқаша тест</h2><p>5 сұраққа жауап бер. Нәтиже прогресс бетінде сақталады.</p></div><span class="quiz-count">5 сұрақ</span></div>
+        ${scoreData ? `<div class="previous-score">Алдыңғы нәтиже: <b>${scoreData.score}/5</b> · ${scoreData.percent}% · ${new Date(scoreData.date).toLocaleDateString("kk-KZ")}</div>` : ""}
+        <form id="topicQuizForm" onsubmit="submitTopicQuiz(event, '${topic.id}')">
+          ${quizMarkup}
+          <button class="primary quiz-submit" type="submit">Тестті тексеру және нәтижені сақтау</button>
+        </form>
+        <div id="quizResult" class="quiz-result" aria-live="polite"></div>
+      </section>
+      <section class="lesson-section remember-section"><h2>✅ Есте сақта</h2><ul><li>Физикалық шаманың мағынасын түсініп ал.</li><li>Формуладағы әр таңбаның мағынасын және өлшем бірлігін біл.</li><li>Формуланы қолданар алдында оның қандай жағдайда орындалатынын тексер.</li></ul></section>
+    </article>`;
+}
+
+let completed = JSON.parse(localStorage.getItem("techmechanics_done") || "[]");
+let quizScores = JSON.parse(localStorage.getItem("techmechanics_quiz_scores") || "{}");
+let username = localStorage.getItem("physix_name") || "";
+let useremail = localStorage.getItem("physix_email") || "";
+let currentCourseId = null;
+let currentTopicId = null;
+
+function toast(t) {
+  const el = document.getElementById("toast");
+  el.textContent = t;
+  el.classList.add("show");
+  setTimeout(() => el.classList.remove("show"), 1500);
+}
+
+function go(pageId) {
+  const account = pilotActive();
+  if (!account && pilotReady) {openProfileModal();pageId='home';}
+  if (account?.role === 'curator' && pageId !== 'curator') pageId = 'curator';
+  if (account?.role !== 'curator' && pageId === 'curator') pageId = 'home';
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
+
+  const targetPage = document.getElementById(pageId);
+  if (targetPage) targetPage.classList.add("active");
+
+  const navBtns = document.querySelectorAll(".nav-btn");
+  const navIndex = {home:0, courses:1, problems:2, formulas:3, labs:4, calculator:5, progress:6};
+  const activeIndex = navIndex[pageId];
+  if (activeIndex !== undefined && navBtns[activeIndex]) navBtns[activeIndex].classList.add("active");
+  if (pageId === "curator") document.getElementById("curatorNavBtn").classList.add("active");
+
+  window.scrollTo(0, 0);
+}
+
+function getCoursePct(c) {
+  if (!c.topics || c.topics.length === 0) return 0;
+  const doneCount = c.topics.filter(t => completed.includes(t.id)).length;
+  return Math.round((doneCount / c.topics.length) * 100);
+}
+
+function render() {
+  const gridContainer = document.getElementById("courseGrid");
+  
+  gridContainer.innerHTML = courses.map((c) => {
+    const p = getCoursePct(c);
+    return `
+      <div class="card-item">
+        <div>
+          <div class="course-top">
+            <div class="ico ${c.cls}">${c.icon}</div>
+            <span class="pill">${c.level}</span>
+          </div>
+          <h3>${c.title}</h3>
+          <p>${c.desc}</p>
+        </div>
+        <div>
+          <div class="course-meta">
+            <span>${c.topics.length} тақырып</span>
+            <span>${p}%</span>
+          </div>
+          <div class="bar"><i style="width:${p}%"></i></div>
+          <button class="${p ? 'secondary' : 'primary'}" onclick="openCoursePage('${c.id}')" style="width:100%">
+            ${p === 100 ? 'Қайта қарау' : p ? 'Жалғастыру' : 'Курсты бастау'}
+          </button>
+        </div>
+      </div>`;
+  }).join("");
+
+  const totalTopics = courses.flatMap(c => c.topics).length;
+  const overallPct = totalTopics > 0 ? Math.round((completed.length / totalTopics) * 100) : 0;
+  
+  if (document.getElementById("overall")) document.getElementById("overall").textContent = overallPct + "%";
+  if (document.getElementById("overallBar")) document.getElementById("overallBar").style.width = overallPct + "%";
+  document.getElementById("heroPct").textContent = overallPct + "%";
+  document.getElementById("heroBar").style.width = overallPct + "%";
+  if (document.getElementById("done")) document.getElementById("done").textContent = `${completed.length} / ${totalTopics}`;
+  if (document.getElementById("active")) document.getElementById("active").textContent = courses.filter(c => getCoursePct(c) > 0).length;
+
+  const topicResults = courses.flatMap(c => c.topics.map(t => ({ course: c, topic: t })))
+    .filter(item => quizScores[item.topic.id]);
+  if (document.getElementById("progressList")) document.getElementById("progressList").innerHTML = courses.map(c => {
+    const p = getCoursePct(c);
+    const cDone = c.topics.filter(t => completed.includes(t.id)).length;
+    const cScores = c.topics.filter(t => quizScores[t.id]);
+    const avg = cScores.length ? Math.round(cScores.reduce((sum, t) => sum + quizScores[t.id].percent, 0) / cScores.length) : null;
+    return `
+      <div class="progress-course-card">
+        <div class="progress-course-head"><div><b>${c.title}</b><div class="small">${cDone} / ${c.topics.length} тақырып аяқталды</div></div><strong>${p}%</strong></div>
+        <div class="bar"><i style="width:${p}%"></i></div>
+        <div class="small progress-test-summary">Тест тапсырылды: ${cScores.length}/${c.topics.length}${avg !== null ? ` · Орташа нәтиже: ${avg}%` : " · Әзірге тест нәтижесі жоқ"}</div>
+      </div>`;
+  }).join("") + `
+    <section class="progress-tests">
+      <h3>📝 Тест нәтижелері</h3>
+      ${topicResults.length ? topicResults.map(({course, topic}) => {
+        const result = quizScores[topic.id];
+        return `<div class="progress-test-row">
+          <div><b>${escapeHtml(topic.title)}</b><div class="small">${escapeHtml(course.title)} · ${new Date(result.date).toLocaleDateString("kk-KZ")}</div></div>
+          <div class="score-pill ${result.score >= 4 ? "score-good" : "score-low"}">${result.score}/5 <small>${result.percent}%</small></div>
+        </div>`;
+      }).join("") : `<p class="small">Тақырыптарды оқып, соңындағы 5 сұрақтық тестті тапсырғаннан кейін нәтижелер осында сақталады.</p>`}
+    </section>`;
+
+  document.getElementById("profileBtn").textContent = username || useremail || "Қонақ";
+
+  if (currentCourseId) {
+    renderCourseDetail(currentCourseId);
+  }
+  refreshProgressPage();
+}
+
+function openCoursePage(id) {
+  if (!pilotActive()) { openProfileModal(); return; }
+  currentCourseId = id;
+  renderCourseDetail(id);
+  go("course-detail");
+}
+
+function renderCourseDetail(id) {
+  const c = courses.find(x => x.id === id);
+  if (!c) return;
+  const p = getCoursePct(c);
+  const cDone = c.topics.filter(t => completed.includes(t.id)).length;
+
+  document.getElementById("courseDetailHeader").innerHTML = `
+    <div class="tag">${c.level}</div>
+    <h1>${c.title}</h1>
+    <p>${c.desc}</p>
+    <div class="course-meta" style="margin-top: 15px;">
+      <span>Барлығы: ${c.topics.length} тақырып (${cDone} аяқталды)</span>
+      <span>${p}%</span>
+    </div>
+    <div class="bar" style="margin-top: 8px;"><i style="width:${p}%"></i></div>
+  `;
+
+  document.getElementById("topicsList").innerHTML = c.topics.map((t, index) => {
+    const isDone = completed.includes(t.id);
+    return `
+      <div class="row" style="cursor: pointer;" onclick="openLessonPage('${c.id}', '${t.id}')">
+        <div>
+          <div class="tag">Тақырып ${index + 1}</div>
+          <h3 style="margin: 5px 0 8px; font-size: 18px; color: var(--text);">${t.title}</h3>
+          <div class="small">${t.content.substring(0, 140)}...</div>
+        </div>
+        <div>
+          <span class="pill" style="background: ${isDone ? '#e0f2fe' : '#f8fafc'}; color: ${isDone ? '#0284c7' : 'var(--muted)'}">
+            ${isDone ? 'Өтілді ✓' : 'Оқу →'}
+          </span>
+        </div>
+      </div>`;
+  }).join("");
+}
+
+function openLessonPage(courseId, topicId) {
+  if (!pilotActive()) { openProfileModal(); return; }
+  currentCourseId = courseId;
+  currentTopicId = topicId;
+
+  const c = courses.find(x => x.id === courseId);
+  const t = c.topics.find(x => x.id === topicId);
+  const isDone = completed.includes(t.id);
+
+  document.getElementById("lessonCategory").textContent = c.title;
+  document.getElementById("lessonTitle").textContent = t.title;
+  document.getElementById("lessonContent").innerHTML = buildLessonContent(c, t);
+  
+  const statusEl = document.getElementById("lessonStatusText");
+  const finishBtn = document.getElementById("finishLessonBtn");
+
+  if (isDone) {
+    statusEl.textContent = "Бұл тақырып өтілді ✓";
+    statusEl.style.color = "#0d9488";
+    statusEl.style.background = "#ccfbf1";
+    finishBtn.textContent = "Қайталау ✓";
+  } else {
+    statusEl.textContent = "Әлі өтілген жоқ";
+    statusEl.style.color = "var(--muted)";
+    statusEl.style.background = "#f1f5f9";
+    finishBtn.textContent = "Тақырыпты оқыдым ✓";
+  }
+
+  go("lesson-detail");
+}
+
+function submitTopicQuiz(event, topicId) {
+  event.preventDefault();
+  const course = courses.find(c => c.topics.some(t => t.id === topicId));
+  const topic = course && course.topics.find(t => t.id === topicId);
+  if (!topic) return;
+  const detail = lessonDetails[topicId] || {};
+  const questions = buildTopicQuiz(topic, detail);
+  const form = document.getElementById("topicQuizForm");
+  const formData = new FormData(form);
+  let score = 0;
+  questions.forEach((q, qi) => {
+    const answer = formData.get(topicId + "_" + qi);
+    const correct = q.options.find(o => o.correct);
+    if (correct && answer === correct.value) score++;
+  });
+  const result = {
+    score,
+    percent: Math.round(score / questions.length * 100),
+    date: new Date().toISOString()
+  };
+  quizScores[topicId] = result;
+  localStorage.setItem("techmechanics_quiz_scores", JSON.stringify(quizScores));
+
+  if (!completed.includes(topicId)) {
+    completed.push(topicId);
+    localStorage.setItem("techmechanics_done", JSON.stringify(completed));
+  }
+  pilotSaveCurrent();
+
+  const resultEl = document.getElementById("quizResult");
+  resultEl.className = "quiz-result show " + (score >= 4 ? "result-good" : "result-review");
+  resultEl.innerHTML = `<b>Нәтиже: ${score}/5 (${result.percent}%)</b><p>${score >= 4 ? "Жарайсың! Тақырыпты жақсы меңгердің." : "Тақырыптың түсіндірмесі мен формулаларын қайталап, тестті қайта тапсыр."}</p><button type="button" class="secondary" onclick="go('progress'); render();">Прогресс бетіндегі нәтижені көру</button>`;
+  toast("Тест нәтижесі сақталды");
+  render();
+}
+
+function finishCurrentTopic() {
+  if (!currentTopicId || !currentCourseId) return;
+  if (!completed.includes(currentTopicId)) {
+    completed.push(currentTopicId);
+    localStorage.setItem("techmechanics_done", JSON.stringify(completed));
+    toast("Тақырып аяқталды! ✓");
+  } else {
+    toast("Бұл тақырып бұрын оқылған");
+  }
+  pilotSaveCurrent();
+  render();
+  openCoursePage(currentCourseId);
+}
+
+function backToCourse() {
+  if (currentCourseId) {
+    openCoursePage(currentCourseId);
+  } else {
+    go("courses");
+  }
+}
+
+
+function openProfileModal(){pilotShowAuth(pilotActive()?'account':pilotAuthMode);document.getElementById('profileModal').classList.remove('hidden')}
+function closeProfileModal(){if(pilotActive())document.getElementById('profileModal').classList.add('hidden')}
+function pilotUpdateRoleFields(){document.getElementById('pilotCuratorCodeWrap').hidden=document.querySelector('input[name="pilotRole"]:checked')?.value==='curator'}
+function handleStartBtn(){const a=pilotActive();if(!a)openProfileModal();else go(a.role==='curator'?'curator':'courses')}
+window.onload=function(){render();pilotBootstrapServer();};
+const mechanicsFormulaData = [
+  // КИНЕМАТИКА
+  {name:'Орташа жылдамдық',formula:'v = s / t',topic:'Кинематика',desc:'Жүрілген жолдың оны жүруге кеткен уақытқа қатынасы. Бірқалыпты қозғалыста осы формула жылдамдықты табуға қолданылады.',vars:['v — жылдамдық (м/с)','s — жол (м)','t — уақыт (с)'],keywords:'қозғалыс жол уақыт орташа жылдамдық'},
+  {name:'Орын ауыстыру бойынша орташа жылдамдық',formula:'v̄ = Δx / Δt',topic:'Кинематика',desc:'Координатаның өзгерісін уақыт аралығына бөлу арқылы анықталады. Бағыт ескерілетін есептерде қолданылады.',vars:['Δx — координата өзгерісі (м)','Δt — уақыт аралығы (с)','v̄ — орташа жылдамдық (м/с)'],keywords:'орын ауыстыру координата уақыт вектор'},
+  {name:'Үдеу',formula:'a = (v − v₀) / t',topic:'Кинематика',desc:'Жылдамдықтың уақыт бойынша қаншалықты өзгеретінін сипаттайды. Үдеу оң да, теріс те болуы мүмкін.',vars:['a — үдеу (м/с²)','v₀ — бастапқы жылдамдық (м/с)','v — соңғы жылдамдық (м/с)','t — уақыт (с)'],keywords:'үдеу жылдамдық өзгерісі'},
+  {name:'Соңғы жылдамдық',formula:'v = v₀ + at',topic:'Кинематика',desc:'Тұрақты үдеумен қозғалған дененің белгілі уақыттан кейінгі жылдамдығын есептейді.',vars:['v — соңғы жылдамдық (м/с)','v₀ — бастапқы жылдамдық (м/с)','a — үдеу (м/с²)','t — уақыт (с)'],keywords:'бірқалыпты үдемелі қозғалыс'},
+  {name:'Бірқалыпты үдемелі қозғалыстағы жол',formula:'s = v₀t + at² / 2',topic:'Кинематика',desc:'Бастапқы жылдамдық пен тұрақты үдеу белгілі болғанда уақыт ішінде жүрген жолды табуға қолданылады.',vars:['s — орын ауыстыру (м)','v₀ — бастапқы жылдамдық (м/с)','a — үдеу (м/с²)','t — уақыт (с)'],keywords:'жол үдеу уақыт кинематика'},
+  {name:'Жылдамдықсыз басталған еркін түсу биіктігі',formula:'h = gt² / 2',topic:'Кинематика',desc:'Ауа кедергісі ескерілмейтін және бастапқы жылдамдық нөлге тең еркін түсу жағдайында қолданылады.',vars:['h — биіктік (м)','g — еркін түсу үдеуі (≈ 9,81 м/с²)','t — уақыт (с)'],keywords:'еркін түсу ауырлық биіктік галилей'},
+  {name:'Айналу периоды мен жиілік',formula:'ν = 1 / T',topic:'Кинематика',desc:'Жиілік бір секундтағы айналым санын көрсетеді, ал период бір толық айналымға кететін уақытты білдіреді.',vars:['ν — жиілік (Гц)','T — период (с)'],keywords:'шеңбер айналу период жиілік'},
+  {name:'Сызықтық және бұрыштық жылдамдық',formula:'v = ωr',topic:'Кинематика',desc:'Шеңбер бойымен қозғалған дененің сызықтық жылдамдығы бұрыштық жылдамдық пен радиусқа тәуелді.',vars:['v — сызықтық жылдамдық (м/с)','ω — бұрыштық жылдамдық (рад/с)','r — радиус (м)'],keywords:'шеңбер радиус бұрыштық жылдамдық'},
+  // ДИНАМИКА
+  {name:'Ньютонның екінші заңы',formula:'F = ma',topic:'Динамика',desc:'Денеге әсер ететін қорытқы күш оның массасы мен үдеуінің көбейтіндісіне тең. Күш артса, масса тұрақты кезде үдеу де артады.',vars:['F — қорытқы күш (Н)','m — масса (кг)','a — үдеу (м/с²)'],keywords:'ньютон күш масса үдеу'},
+  {name:'Ауырлық күші',formula:'Fа = mg',topic:'Динамика',desc:'Жер бетіне жақын денеге Жердің тартылысынан әсер ететін күш. Есептерде g ≈ 9,81 м/с² деп алуға болады.',vars:['Fа — ауырлық күші (Н)','m — масса (кг)','g — еркін түсу үдеуі (м/с²)'],keywords:'ауырлық жер тартылыс салмақ'},
+  {name:'Гук заңы',formula:'Fсерп = kx',topic:'Динамика',desc:'Серпімділік шегінде серіппенің деформациясына қарсы бағытталған күштің модулі деформация шамасына пропорционал.',vars:['Fсерп — серпімділік күшінің модулі (Н)','k — серіппе қатаңдығы (Н/м)','x — ұзару немесе сығылу (м)'],keywords:'гук серіппе серпімділік деформация қатаңдық'},
+  {name:'Сырғанау үйкеліс күші',formula:'Fүйк = μN',topic:'Динамика',desc:'Қарапайым модельде сырғанау үйкелісі үйкеліс коэффициенті мен тіректің нормаль реакциясына тәуелді.',vars:['Fүйк — үйкеліс күші (Н)','μ — үйкеліс коэффициенті (өлшемсіз)','N — тіректің нормаль реакциясы (Н)'],keywords:'үйкеліс коэффициент тірек бет'},
+  {name:'Бүкіләлемдік тартылыс заңы',formula:'F = Gm₁m₂ / r²',topic:'Динамика',desc:'Кез келген екі дене бір-бірін тартады. Күш массалар көбейтіндісіне тура, арақашықтық квадратына кері пропорционал.',vars:['F — тартылыс күші (Н)','G — гравитациялық тұрақты','m₁, m₂ — массалар (кг)','r — центрлер арасы (м)'],keywords:'ньютон тартылыс гравитация ғалам'},
+  {name:'Импульс',formula:'p = mv',topic:'Динамика',desc:'Дененің қозғалыс мөлшерін сипаттайтын векторлық шама. Масса немесе жылдамдық артқан сайын импульс модулі артады.',vars:['p — импульс (кг·м/с)','m — масса (кг)','v — жылдамдық (м/с)'],keywords:'импульс қозғалыс мөлшері масса'},
+  {name:'Кинетикалық энергия',formula:'Eₖ = mv² / 2',topic:'Динамика',desc:'Қозғалыстағы дененің энергиясы. Жылдамдық екі есе артса, масса тұрақты кезде кинетикалық энергия төрт есе артады.',vars:['Eₖ — кинетикалық энергия (Дж)','m — масса (кг)','v — жылдамдық (м/с)'],keywords:'энергия кинетикалық жұмыс қозғалыс'},
+  {name:'Жұмыс',formula:'A = Fs cos α',topic:'Динамика',desc:'Тұрақты күштің жұмысы күштің орын ауыстыру бағытына түсірілген құраушысы мен орын ауыстырудың көбейтіндісіне тең.',vars:['A — жұмыс (Дж)','F — күш (Н)','s — орын ауыстыру (м)','α — күш пен орын ауыстыру арасындағы бұрыш'],keywords:'механикалық жұмыс энергия бұрыш'},
+  {name:'Қуат',formula:'P = A / t',topic:'Динамика',desc:'Қуат жұмыстың орындалу жылдамдығын сипаттайды: бірдей жұмыс аз уақытта орындалса, қуат үлкен болады.',vars:['P — қуат (Вт)','A — жұмыс (Дж)','t — уақыт (с)'],keywords:'қуат жұмыс уақыт ватт'},
+  {name:'Салмақ (тыныштықта немесе бірқалыпты қозғалыста)',formula:'P = mg',topic:'Динамика',desc:'Дене тірекке немесе аспаға түсіретін күштің модулі тыныштықта немесе үдеу нөл болғанда mg-ге тең болады. Үдеумен қозғалғанда салмақ өзгеруі мүмкін.',vars:['P — салмақ (Н)','m — масса (кг)','g — еркін түсу үдеуі (м/с²)'],keywords:'салмақ тірек салмақсыздық'},
+  // СТАТИКА
+  {name:'Күштердің тепе-теңдігі',formula:'ΣF = 0',topic:'Статика',desc:'Ілгерілемелі тепе-теңдікте қорытқы күш нөлге тең. Күштерді бағыттары бойынша осьтерге жіктеп есептеуге болады.',vars:['ΣF — барлық күштердің векторлық қосындысы (Н)'],keywords:'тепе теңдік күштер қорытқы күш'},
+  {name:'Күш моменті',formula:'M = Fℓ',topic:'Статика',desc:'Күштің денені айналдыру әсерін сипаттайды. Күш иіні — айналу осінен күштің әсер ету сызығына дейінгі ең қысқа қашықтық.',vars:['M — күш моменті (Н·м)','F — күш (Н)','ℓ — күш иіні (м)'],keywords:'момент иін айналу ось'},
+  {name:'Иіндік ережесі',formula:'F₁ℓ₁ = F₂ℓ₂',topic:'Статика',desc:'Иіндік тепе-теңдікте болғанда тірекке қатысты қарама-қарсы бағыттағы күш моменттері тең болады.',vars:['F₁, F₂ — күштер (Н)','ℓ₁, ℓ₂ — күш иіндері (м)'],keywords:'иіндік рычаг тепе теңдік момент'},
+  {name:'Қатты дененің толық тепе-теңдігі',formula:'ΣF = 0;  ΣM = 0',topic:'Статика',desc:'Қатты дене ілгерілемелі де, айналмалы да үдемейтін болуы үшін қорытқы күш пен қорытқы момент нөлге тең болуы қажет.',vars:['ΣF — қорытқы күш (Н)','ΣM — қорытқы күш моменті (Н·м)'],keywords:'статика конструкция арқалық тепе теңдік'},
+  {name:'Тығыздық',formula:'ρ = m / V',topic:'Динамика',desc:'Заттың бірлік көлеміне келетін массасын сипаттайды. Бұл формула механика есептерінде дене массасын немесе көлемін табуға да қолданылады.',vars:['ρ — тығыздық (кг/м³)','m — масса (кг)','V — көлем (м³)'],keywords:'тығыздық масса көлем зат'}
+];
+
+function renderFormulaCards() {
+  const grid = document.getElementById('formulaGrid');
+  if (!grid) return;
+  const searchEl = document.getElementById('formulaSearch');
+  const topicEl = document.getElementById('formulaTopic');
+  const q = (searchEl?.value || '').trim().toLocaleLowerCase('kk');
+  const topic = topicEl?.value || 'all';
+  const filtered = mechanicsFormulaData.filter(f => {
+    const haystack = [f.name, f.formula, f.topic, f.desc, f.keywords, ...f.vars].join(' ').toLocaleLowerCase('kk');
+    return (topic === 'all' || f.topic === topic) && (!q || haystack.includes(q));
+  });
+  grid.innerHTML = filtered.map(f => `
+    <article class="formula-card">
+      <div class="formula-card-head"><span class="formula-topic">${escapeFormulaText(f.topic)}</span><h3>${escapeFormulaText(f.name)}</h3></div>
+      <div class="formula-equation">${escapeFormulaText(f.formula)}</div>
+      <div class="formula-card-body"><p>${escapeFormulaText(f.desc)}</p><h4>Белгіленулер және өлшем бірліктері</h4><div class="formula-vars">${f.vars.map(v => `<span>${escapeFormulaText(v)}</span>`).join('')}</div></div>
+    </article>`).join('');
+  document.getElementById('formulaCount').textContent = `${filtered.length} формула`;
+  document.getElementById('formulaEmpty').hidden = filtered.length !== 0;
+}
+function clearFormulaSearch() {
+  const search = document.getElementById('formulaSearch');
+  if (search) search.value = '';
+  const topic = document.getElementById('formulaTopic');
+  if (topic) topic.value = 'all';
+  renderFormulaCards();
+}
+function escapeFormulaText(value) {
+  return String(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+}
+// Егер сайтта go(pageId) функциясы бар болса, формулалар бетіне кіргенде тізімді қайта сызады.
+const oldFormulaGo = window.go;
+if (typeof oldFormulaGo === 'function' && !oldFormulaGo.__formulaWrapped) {
+  const wrappedFormulaGo = function(pageId) {
+    oldFormulaGo.apply(this, arguments);
+    if (pageId === 'formulas') renderFormulaCards();
+  };
+  wrappedFormulaGo.__formulaWrapped = true;
+  window.go = wrappedFormulaGo;
+}
+document.addEventListener('DOMContentLoaded', renderFormulaCards);
+const mechanicsCalculations = {
+  kinematics: [
+    {
+      id: "speed",
+      name: "Жылдамдықты есептеу",
+      formula: "v = s / t",
+      description: "Жылдамдық жүрілген жолды уақытқа бөлу арқылы табылады.",
+      inputs: [
+        { id: "s", label: "Жүрілген жол", unit: "м" },
+        { id: "t", label: "Уақыт", unit: "с" }
+      ],
+      calculate: v => {
+        if (v.t <= 0) throw Error("Уақыт нөлден үлкен болуы керек.");
+        return { value: v.s / v.t, unit: "м/с" };
+      }
+    },
+    {
+      id: "distance",
+      name: "Жолды есептеу",
+      formula: "s = v · t",
+      description: "Бірқалыпты қозғалыста жол жылдамдық пен уақыттың көбейтіндісіне тең.",
+      inputs: [
+        { id: "v", label: "Жылдамдық", unit: "м/с" },
+        { id: "t", label: "Уақыт", unit: "с" }
+      ],
+      calculate: v => ({ value: v.v * v.t, unit: "м" })
+    },
+    {
+      id: "time",
+      name: "Қозғалыс уақытын есептеу",
+      formula: "t = s / v",
+      description: "Жолды жылдамдыққа бөлу арқылы уақыт табылады.",
+      inputs: [
+        { id: "s", label: "Жүрілген жол", unit: "м" },
+        { id: "v", label: "Жылдамдық", unit: "м/с" }
+      ],
+      calculate: v => {
+        if (v.v <= 0) throw Error("Жылдамдық нөлден үлкен болуы керек.");
+        return { value: v.s / v.v, unit: "с" };
+      }
+    },
+    {
+      id: "acceleration",
+      name: "Үдеуді есептеу",
+      formula: "a = (v − v₀) / t",
+      description: "Үдеу жылдамдық өзгерісінің уақытқа қатынасына тең.",
+      inputs: [
+        { id: "v", label: "Соңғы жылдамдық", unit: "м/с" },
+        { id: "v0", label: "Бастапқы жылдамдық", unit: "м/с" },
+        { id: "t", label: "Уақыт", unit: "с" }
+      ],
+      calculate: v => {
+        if (v.t <= 0) throw Error("Уақыт нөлден үлкен болуы керек.");
+        return { value: (v.v - v.v0) / v.t, unit: "м/с²" };
+      }
+    },
+    {
+      id: "finalVelocity",
+      name: "Соңғы жылдамдық",
+      formula: "v = v₀ + at",
+      description: "Тұрақты үдеумен қозғалған дененің соңғы жылдамдығы.",
+      inputs: [
+        { id: "v0", label: "Бастапқы жылдамдық", unit: "м/с" },
+        { id: "a", label: "Үдеу", unit: "м/с²" },
+        { id: "t", label: "Уақыт", unit: "с" }
+      ],
+      calculate: v => ({ value: v.v0 + v.a * v.t, unit: "м/с" })
+    },
+    {
+      id: "freeFall",
+      name: "Еркін түсу жылдамдығы",
+      formula: "v = gt",
+      description: "Дене тыныштықтан еркін құлағанда, ауа кедергісі ескерілмейді. g ≈ 9,81 м/с².",
+      inputs: [
+        { id: "t", label: "Құлау уақыты", unit: "с" }
+      ],
+      calculate: v => ({ value: 9.81 * v.t, unit: "м/с" })
+    }
+  ],
+
+  dynamics: [
+    {
+      id: "newton",
+      name: "Ньютонның екінші заңы",
+      formula: "F = ma",
+      description: "Қорытқы күш дене массасы мен үдеуінің көбейтіндісіне тең.",
+      inputs: [
+        { id: "m", label: "Масса", unit: "кг" },
+        { id: "a", label: "Үдеу", unit: "м/с²" }
+      ],
+      calculate: v => ({ value: v.m * v.a, unit: "Н" })
+    },
+    {
+      id: "weight",
+      name: "Ауырлық күші",
+      formula: "F = mg",
+      description: "Жер бетіне жақын жерде g ≈ 9,81 м/с².",
+      inputs: [
+        { id: "m", label: "Масса", unit: "кг" }
+      ],
+      calculate: v => ({ value: v.m * 9.81, unit: "Н" })
+    },
+    {
+      id: "friction",
+      name: "Үйкеліс күші",
+      formula: "Fүйк = μN",
+      description: "Үйкеліс күші үйкеліс коэффициенті мен тірек реакция күшінің көбейтіндісіне тең.",
+      inputs: [
+        { id: "mu", label: "Үйкеліс коэффициенті μ", unit: "" },
+        { id: "N", label: "Тірек реакция күші", unit: "Н" }
+      ],
+      calculate: v => ({ value: v.mu * v.N, unit: "Н" })
+    },
+    {
+      id: "momentum",
+      name: "Импульс",
+      formula: "p = mv",
+      description: "Дене импульсі масса мен жылдамдықтың көбейтіндісіне тең.",
+      inputs: [
+        { id: "m", label: "Масса", unit: "кг" },
+        { id: "v", label: "Жылдамдық", unit: "м/с" }
+      ],
+      calculate: v => ({ value: v.m * v.v, unit: "кг·м/с" })
+    },
+    {
+      id: "work",
+      name: "Механикалық жұмыс",
+      formula: "A = Fs",
+      description: "Күш орын ауыстыру бағытымен бағытталған жағдайда орындалады.",
+      inputs: [
+        { id: "F", label: "Күш", unit: "Н" },
+        { id: "s", label: "Орын ауыстыру", unit: "м" }
+      ],
+      calculate: v => ({ value: v.F * v.s, unit: "Дж" })
+    },
+    {
+      id: "power",
+      name: "Қуат",
+      formula: "P = A / t",
+      description: "Қуат — уақыт бірлігінде орындалған жұмыс.",
+      inputs: [
+        { id: "A", label: "Жұмыс", unit: "Дж" },
+        { id: "t", label: "Уақыт", unit: "с" }
+      ],
+      calculate: v => {
+        if (v.t <= 0) throw Error("Уақыт нөлден үлкен болуы керек.");
+        return { value: v.A / v.t, unit: "Вт" };
+      }
+    },
+    {
+      id: "kinetic",
+      name: "Кинетикалық энергия",
+      formula: "Eₖ = mv² / 2",
+      description: "Қозғалыстағы дененің кинетикалық энергиясы.",
+      inputs: [
+        { id: "m", label: "Масса", unit: "кг" },
+        { id: "v", label: "Жылдамдық", unit: "м/с" }
+      ],
+      calculate: v => ({ value: v.m * v.v * v.v / 2, unit: "Дж" })
+    }
+  ],
+
+  statics: [
+    {
+      id: "moment",
+      name: "Күш моменті",
+      formula: "M = F · l",
+      description: "Күш моменті күш пен күш иінінің көбейтіндісіне тең. Күш иіні күшке перпендикуляр қашықтық болуы керек.",
+      inputs: [
+        { id: "F", label: "Күш", unit: "Н" },
+        { id: "l", label: "Күш иіні", unit: "м" }
+      ],
+      calculate: v => ({ value: v.F * v.l, unit: "Н·м" })
+    },
+    {
+      id: "lever",
+      name: "Иінтіректің тепе-теңдігі",
+      formula: "F₁l₁ = F₂l₂",
+      description: "Тепе-теңдіктегі иінтіректе екі күш моменті тең. Бұл формула F₂ күшін табады.",
+      inputs: [
+        { id: "F1", label: "Бірінші күш F₁", unit: "Н" },
+        { id: "l1", label: "Бірінші иін l₁", unit: "м" },
+        { id: "l2", label: "Екінші иін l₂", unit: "м" }
+      ],
+      calculate: v => {
+        if (v.l2 <= 0) throw Error("Екінші иін нөлден үлкен болуы керек.");
+        return { value: (v.F1 * v.l1) / v.l2, unit: "Н" };
+      }
+    }
+  ]
+};
+
+function getSelectedMechanicsFormula() {
+  const category = document.getElementById("calcCategory").value;
+  const id = document.getElementById("calcFormula").value;
+
+  return mechanicsCalculations[category].find(item => item.id === id);
+}
+
+function updateCalcFormulas() {
+  const category = document.getElementById("calcCategory").value;
+  const select = document.getElementById("calcFormula");
+
+  select.innerHTML = mechanicsCalculations[category]
+    .map(item => `<option value="${item.id}">${item.name}</option>`)
+    .join("");
+
+  renderCalcInputs();
+}
+
+function renderCalcInputs() {
+  const formula = getSelectedMechanicsFormula();
+  if (!formula) return;
+
+  document.getElementById("calcFormulaText").textContent = formula.formula;
+  document.getElementById("calcFormulaDescription").textContent =
+    formula.description;
+
+  document.getElementById("calcInputs").innerHTML =
+    formula.inputs.map(input => `
+      <div class="calc-field">
+        <label for="calc_${input.id}">
+          ${input.label}${input.unit ? ` (${input.unit})` : ""}
+        </label>
+        <input
+          id="calc_${input.id}"
+          type="number"
+          step="any"
+          required
+          placeholder="Мәнді енгіз"
+        >
+        <small>Өлшем бірлігі: ${input.unit || "бірліксіз"}</small>
+      </div>
+    `).join("");
+
+  showCalcResult("—", "Мәндерді енгізіп, «Есептеу» батырмасын бас.");
+}
+
+function calculateMechanics() {
+  const formula = getSelectedMechanicsFormula();
+  if (!formula) return;
+
+  const values = {};
+
+  for (const input of formula.inputs) {
+    const element = document.getElementById("calc_" + input.id);
+    const rawValue = element.value.trim();
+
+    if (rawValue === "" || !Number.isFinite(Number(rawValue))) {
+      showCalcError("Барлық өрістерге сан енгіз.");
+      element.focus();
+      return;
+    }
+
+    values[input.id] = Number(rawValue);
+  }
+
+  try {
+    const result = formula.calculate(values);
+
+    if (!Number.isFinite(result.value)) {
+      throw Error("Есептеу нәтижесін анықтау мүмкін болмады.");
+    }
+
+    const rounded = Number(result.value.toFixed(4));
+    const steps = formula.inputs.map(input =>
+      `${input.label}: ${values[input.id]} ${input.unit}`.trim()
+    ).join("; ");
+
+    showCalcResult(
+      `${rounded} ${result.unit}`,
+      `Қолданылған формула: ${formula.formula}. Енгізілген мәндер: ${steps}.`
+    );
+  } catch (error) {
+    showCalcError(error.message || "Есептеу кезінде қате пайда болды.");
+  }
+}
+
+function showCalcResult(value, description) {
+  const result = document.getElementById("calcResult");
+  result.classList.remove("error");
+  result.innerHTML = `
+    <span>НӘТИЖЕ</span>
+    <h2>${value}</h2>
+    <p>${description}</p>
+  `;
+}
+
+function showCalcError(message) {
+  const result = document.getElementById("calcResult");
+  result.classList.add("error");
+  result.innerHTML = `
+    <span>ҚАТЕ</span>
+    <h2>Тексеріп көр</h2>
+    <p>${message}</p>
+  `;
+}
+
+function resetMechanicsCalc() {
+  document.querySelectorAll("#calcInputs input").forEach(input => {
+    input.value = "";
+  });
+
+  showCalcResult("—", "Мәндерді қайта енгіз.");
+}
+
+document.addEventListener("DOMContentLoaded", updateCalcFormulas);
+updateCalcFormulas();
+const mechanicsProblems = [
+  // КИНЕМАТИКА — 8 есеп
+  {
+    id: "k1", course: "kinematics", topic: "Механикалық қозғалыс және санақ жүйесі",
+    level: "Оңай", question: "Дене 5 секундта 50 м жол жүрді. Жылдамдығын тап.",
+    formula: "v = s / t", answer: 10, unit: "м/с",
+    solution: "v = 50 / 5 = 10 м/с."
+  },
+  {
+    id: "k2", course: "kinematics", topic: "Материялық нүкте, траектория",
+    level: "Оңай", question: "Ұзақ жолда автобустың өлшемдерін елемеуге болатын модель қалай аталады? «Материялық нүкте» деп жаз.",
+    formula: "Материялық нүкте моделі", answer: "материялық нүкте", unit: "",
+    solution: "Автобустың өлшемдері жүрген жолымен салыстырғанда елеусіз болса, оны материялық нүкте деп қарастыруға болады."
+  },
+  {
+    id: "k3", course: "kinematics", topic: "Жол және орын ауыстыру",
+    level: "Оңай", question: "Оқушы 30 м алға, 10 м кері жүрді. Толық жүрілген жолды тап.",
+    formula: "s = s₁ + s₂", answer: 40, unit: "м",
+    solution: "s = 30 + 10 = 40 м."
+  },
+  {
+    id: "k4", course: "kinematics", topic: "Бірқалыпты және бірқалыпсыз қозғалыс",
+    level: "Оңай", question: "Дене 4 секундта 28 м жүрді. Орташа жылдамдығын есепте.",
+    formula: "v = s / t", answer: 7, unit: "м/с",
+    solution: "v = 28 / 4 = 7 м/с."
+  },
+  {
+    id: "k5", course: "kinematics", topic: "Жылдамдық және үдеу",
+    level: "Орташа", question: "Жылдамдық 4 м/с-тан 16 м/с-қа 3 секундта өзгерді. Үдеуді тап.",
+    formula: "a = (v − v₀) / t", answer: 4, unit: "м/с²",
+    solution: "a = (16 − 4) / 3 = 4 м/с²."
+  },
+  {
+    id: "k6", course: "kinematics", topic: "Түзусызықты және қисықсызықты қозғалыс",
+    level: "Оңай", question: "Автокөлік бұрылыспен жүріп келеді. Бұл қандай қозғалыс? «Қисықсызықты» деп жаз.",
+    formula: "Қозғалыс траекториясы", answer: "қисықсызықты", unit: "",
+    solution: "Бұрылыстағы траектория қисық болғандықтан, қозғалыс қисықсызықты деп аталады."
+  },
+  {
+    id: "k7", course: "kinematics", topic: "Еркін түсу",
+    level: "Орташа", question: "Дене тыныштықтан 2 секунд еркін құлады. g = 10 м/с². Құлау биіктігін тап.",
+    formula: "h = gt² / 2", answer: 20, unit: "м",
+    solution: "h = 10 · 2² / 2 = 20 м."
+  },
+  {
+    id: "k8", course: "kinematics", topic: "Шеңбер бойымен қозғалыс",
+    level: "Орташа", question: "Дене бір айналымды 4 секундта орындайды. Айналу жиілігін тап.",
+    formula: "ν = 1 / T", answer: 0.25, unit: "Гц",
+    solution: "ν = 1 / 4 = 0,25 Гц."
+  },
+
+  // ДИНАМИКА — 9 есеп
+  {
+    id: "d1", course: "dynamics", topic: "Ньютонның бірінші заңы — инерция заңы",
+    level: "Оңай", question: "Қорытқы күш нөл болса, тыныштықтағы дене тыныштық күйін сақтай ма? «Иә» немесе «жоқ» деп жаз.",
+    formula: "ΣF = 0", answer: "иә", unit: "",
+    solution: "Иә. Қорытқы күш нөл болса, дене тыныштық күйін немесе бірқалыпты түзу сызықты қозғалысын сақтайды."
+  },
+  {
+    id: "d2", course: "dynamics", topic: "Ньютонның екінші заңы",
+    level: "Оңай", question: "Массасы 6 кг дене 3 м/с² үдеумен қозғалады. Күшті тап.",
+    formula: "F = ma", answer: 18, unit: "Н",
+    solution: "F = 6 · 3 = 18 Н."
+  },
+  {
+    id: "d3", course: "dynamics", topic: "Ньютонның үшінші заңы",
+    level: "Оңай", question: "Бір дене екінші денеге 15 Н күшпен әсер етеді. Қарсы әсер күшінің модулі неше Н?",
+    formula: "F₁ = F₂", answer: 15, unit: "Н",
+    solution: "Күштердің модульдері тең: F₂ = 15 Н. Бағыттары қарама-қарсы."
+  },
+  {
+    id: "d4", course: "dynamics", topic: "Масса және күш",
+    level: "Орташа", question: "Денеге 24 Н күш әсер етіп, 6 м/с² үдеу береді. Массаны тап.",
+    formula: "m = F / a", answer: 4, unit: "кг",
+    solution: "m = 24 / 6 = 4 кг."
+  },
+  {
+    id: "d5", course: "dynamics", topic: "Ауырлық күші",
+    level: "Оңай", question: "Массасы 7 кг дененің ауырлық күшін тап. g = 10 м/с².",
+    formula: "F = mg", answer: 70, unit: "Н",
+    solution: "F = 7 · 10 = 70 Н."
+  },
+  {
+    id: "d6", course: "dynamics", topic: "Серпімділік күші",
+    level: "Орташа", question: "Серіппе қатаңдығы 200 Н/м, ұзаруы 0,05 м. Серпімділік күшін тап.",
+    formula: "F = kx", answer: 10, unit: "Н",
+    solution: "F = 200 · 0,05 = 10 Н."
+  },
+  {
+    id: "d7", course: "dynamics", topic: "Үйкеліс күші",
+    level: "Орташа", question: "μ = 0,2 және тірек реакция күші 50 Н. Үйкеліс күшін есепте.",
+    formula: "Fүйк = μN", answer: 10, unit: "Н",
+    solution: "Fүйк = 0,2 · 50 = 10 Н."
+  },
+  {
+    id: "d8", course: "dynamics", topic: "Бүкіләлемдік тартылыс заңы",
+    level: "Күрделі", question: "Екі дененің арақашықтығы 2 есе артты. Тартылыс күші неше есе азаяды? Санмен жауап бер.",
+    formula: "F ∝ 1 / r²", answer: 4, unit: "есе",
+    solution: "Күш арақашықтықтың квадратына кері пропорционал. 2² = 4 есе азаяды."
+  },
+  {
+    id: "d9", course: "dynamics", topic: "Салмақ және салмақсыздық",
+    level: "Орташа", question: "Массасы 5 кг дененің тыныштықтағы салмағын тап. g = 10 м/с².",
+    formula: "P = mg", answer: 50, unit: "Н",
+    solution: "P = 5 · 10 = 50 Н."
+  },
+
+  // СТАТИКА — 5 есеп
+  {
+    id: "s1", course: "statics", topic: "Күштердің тепе-теңдігі",
+    level: "Оңай", question: "Денеге қарама-қарсы бағытта 12 Н және 12 Н күш әсер етеді. Қорытқы күшті тап.",
+    formula: "Fқор = 0", answer: 0, unit: "Н",
+    solution: "Күштер тең және қарама-қарсы: Fқор = 12 − 12 = 0 Н."
+  },
+  {
+    id: "s2", course: "statics", topic: "Күш моменті",
+    level: "Оңай", question: "10 Н күштің иіні 0,4 м. Күш моментін тап.",
+    formula: "M = Fl", answer: 4, unit: "Н·м",
+    solution: "M = 10 · 0,4 = 4 Н·м."
+  },
+  {
+    id: "s3", course: "statics", topic: "Иіндік және иіндік ережесі",
+    level: "Орташа", question: "20 Н күш 2 м иінге әсер етеді. Екінші иін 4 м. Тепе-теңдік үшін екінші күш қандай?",
+    formula: "F₁l₁ = F₂l₂", answer: 10, unit: "Н",
+    solution: "F₂ = (20 · 2) / 4 = 10 Н."
+  },
+  {
+    id: "s4", course: "statics", topic: "Денелердің тепе-теңдік шарттары",
+    level: "Орташа", question: "Қатты дене толық тепе-теңдікте болса, қорытқы күш моменті нөлге тең болуы керек пе? «Иә» немесе «жоқ» деп жаз.",
+    formula: "ΣF = 0; ΣM = 0", answer: "иә", unit: "",
+    solution: "Иә. Толық тепе-теңдік үшін қорытқы күш пен қорытқы күш моменті нөлге тең болуы керек."
+  },
+  {
+    id: "s5", course: "statics", topic: "Механизмдердің тепе-теңдігі",
+    level: "Күрделі", question: "Идеал жылжымалы блок 200 Н жүкті ұстап тұр. Арқанның әр тармағындағы тарту күшін тап.",
+    formula: "F = P / 2", answer: 100, unit: "Н",
+    solution: "F = 200 / 2 = 100 Н. Блоктың массасы мен үйкеліс ескерілмейді."
+  }
+];
+
+const problemStorageKey = "mechanics_problems_solved";
+
+function loadSolvedProblems() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(problemStorageKey) || "[]");
+    return Array.isArray(saved) ? saved : [];
+  } catch {
+    return [];
+  }
+}
+
+let solvedMechanicsProblems = loadSolvedProblems();
+
+function renderProblems() {
+  const list = document.getElementById("problemList");
+  if (!list) return;
+
+  const search = document.getElementById("problemSearch")
+    .value.trim().toLocaleLowerCase("kk");
+
+  const course = document.getElementById("problemCourse").value;
+  const level = document.getElementById("problemLevel").value;
+
+  const filtered = mechanicsProblems.filter(p => {
+    const matchesCourse = course === "all" || p.course === course;
+    const matchesLevel = level === "all" || p.level === level;
+
+    const searchableText = `${p.topic} ${p.question} ${p.formula}`
+      .toLocaleLowerCase("kk");
+
+    return matchesCourse && matchesLevel &&
+      searchableText.includes(search);
+  });
+
+  document.getElementById("problemTotal").textContent =
+    mechanicsProblems.length;
+
+  document.getElementById("problemSolved").textContent =
+    solvedMechanicsProblems.length;
+
+  if (filtered.length === 0) {
+    list.innerHTML = `
+      <div class="problem-empty">
+        <h3>Есеп табылмады</h3>
+        <p>Іздеу сөзін немесе сүзгілерді өзгертіп көр.</p>
+      </div>`;
+    return;
+  }
+
+  const courseNames = {
+    kinematics: "Кинематика",
+    dynamics: "Динамика",
+    statics: "Статика"
+  };
+
+  list.innerHTML = filtered.map((p, index) => {
+    const solved = solvedMechanicsProblems.includes(p.id);
+
+    return `
+      <article class="problem-card">
+        <div class="problem-meta">
+          <span>${courseNames[p.course]} · Есеп ${index + 1}</span>
+          <span>${p.level}</span>
+        </div>
+
+        <h3>${p.topic}</h3>
+        <span class="problem-tag">
+          ${solved ? "Орындалды ✓" : "Жаттығу"}
+        </span>
+
+        <p>${p.question}</p>
+
+        <div class="problem-formula">
+          Формула: ${p.formula}
+        </div>
+
+        <div class="problem-answer">
+          <input
+            id="answer-${p.id}"
+            type="text"
+            placeholder="Жауабың${p.unit ? " (" + p.unit + ")" : ""}"
+            aria-label="${p.topic} жауабы"
+          >
+          <button class="problem-check"
+            onclick="checkMechanicsProblem('${p.id}')">
+            Тексеру
+          </button>
+        </div>
+
+        <div id="feedback-${p.id}" aria-live="polite"></div>
+
+        <button class="problem-solution-btn"
+          onclick="toggleProblemSolution('${p.id}')">
+          Шығару жолын көрсету
+        </button>
+
+        <div id="solution-${p.id}" class="problem-solution" hidden>
+          <strong>Жауабы: ${p.answer}${p.unit ? " " + p.unit : ""}</strong>
+          <p>${p.solution}</p>
+        </div>
+      </article>`;
+  }).join("");
+}
+
+function checkMechanicsProblem(id) {
+  const problem = mechanicsProblems.find(p => p.id === id);
+  const input = document.getElementById("answer-" + id);
+  const feedback = document.getElementById("feedback-" + id);
+
+  if (!problem || !input || !feedback) return;
+
+  const raw = input.value.trim();
+
+  if (!raw) {
+    feedback.className = "problem-feedback incorrect";
+    feedback.textContent = "Алдымен жауабыңды енгіз.";
+    return;
+  }
+
+  let correct;
+
+  if (typeof problem.answer === "number") {
+    const value = Number(raw.replace(",", "."));
+    correct = Number.isFinite(value) &&
+      Math.abs(value - problem.answer) < 0.001;
+  } else {
+    const normalize = text => text
+      .toLocaleLowerCase("kk")
+      .replace(/[.,!?]/g, "")
+      .trim();
+
+    correct = normalize(raw) === normalize(problem.answer);
+  }
+
+  if (correct) {
+    if (!solvedMechanicsProblems.includes(id)) {
+      solvedMechanicsProblems.push(id);
+
+      try {
+        localStorage.setItem(
+          problemStorageKey,
+          JSON.stringify(solvedMechanicsProblems)
+        );
+        pilotSaveCurrent();
+      } catch (error) {
+        console.warn("Нәтижені сақтау мүмкін болмады.", error);
+      }
+    }
+
+    feedback.className = "problem-feedback correct";
+    feedback.textContent = "Дұрыс жауап! ✓";
+
+    document.getElementById("solution-" + id).hidden = false;
+  } else {
+    feedback.className = "problem-feedback incorrect";
+    feedback.textContent = "Қате жауап. Формуланы қайта тексеріп көр.";
+  }
+
+  document.getElementById("problemSolved").textContent =
+    solvedMechanicsProblems.length;
+
+  const card = input.closest(".problem-card");
+  if (card && correct) {
+    card.querySelector(".problem-tag").textContent = "Орындалды ✓";
+  }
+}
+
+function toggleProblemSolution(id) {
+  const solution = document.getElementById("solution-" + id);
+  if (solution) solution.hidden = !solution.hidden;
+}
+
+document.getElementById("problemSearch")
+  .addEventListener("input", renderProblems);
+
+document.getElementById("problemCourse")
+  .addEventListener("change", renderProblems);
+
+document.getElementById("problemLevel")
+  .addEventListener("change", renderProblems);
+
+renderProblems();
+function refreshProgressPage() {
+  const completedTopics = Array.isArray(window.completed)
+    ? window.completed
+    : (
+        typeof completed !== "undefined" &&
+        Array.isArray(completed)
+          ? completed
+          : JSON.parse(localStorage.getItem("techmechanics_done") || "[]")
+      );
+
+  const topicList = Array.isArray(window.courses)
+    ? window.courses
+    : (
+        typeof courses !== "undefined" && Array.isArray(courses)
+          ? courses
+          : []
+      );
+
+  let quizData = {};
+
+  try {
+    quizData = typeof quizScores !== "undefined"
+      ? quizScores
+      : JSON.parse(localStorage.getItem("quizScores") || "{}");
+  } catch (error) {
+    quizData = {};
+  }
+
+  let solvedProblems = [];
+
+  try {
+    solvedProblems = JSON.parse(
+      localStorage.getItem("mechanics_problems_solved") || "[]"
+    );
+
+    if (!Array.isArray(solvedProblems)) solvedProblems = [];
+  } catch (error) {
+    solvedProblems = [];
+  }
+
+  const totalTopics = topicList.reduce((total, course) => {
+    return total + (Array.isArray(course.topics) ? course.topics.length : 0);
+  }, 0);
+
+  const completedCount = completedTopics.length;
+  const percent = totalTopics
+    ? Math.min(100, Math.round(completedCount / totalTopics * 100))
+    : 0;
+
+  const scoreValues = Object.values(quizData)
+    .map(value => {
+      if (typeof value === "number") return value;
+      if (value && typeof value.percent === "number") return value.percent;
+      if (value && typeof value.score === "number") return value.score / 5 * 100;
+      return null;
+    })
+    .filter(value => value !== null && Number.isFinite(value));
+
+  const averageScore = scoreValues.length
+    ? Math.round(
+        scoreValues.reduce((sum, value) => sum + value, 0) /
+        scoreValues.length
+      )
+    : 0;
+
+  document.getElementById("progressTopics").textContent =
+    `${completedCount}/${totalTopics || 22}`;
+
+  document.getElementById("progressTest").textContent =
+    `${averageScore}%`;
+
+  document.getElementById("progressProblems").textContent =
+    solvedProblems.length;
+
+  document.getElementById("progressPercent").textContent =
+    `${percent}%`;
+
+  document.getElementById("progressBar").style.width =
+    `${percent}%`;
+
+  document.getElementById("progressMessage").textContent =
+    percent === 100
+      ? "Тамаша! Барлық тақырыпты аяқтадың!"
+      : percent >= 70
+        ? "Жақсы нәтиже! Қалған тақырыптарды да аяқта."
+        : percent >= 30
+          ? "Жақсы бастама! Оқуды жалғастыр."
+          : "Алғашқы тақырыпты оқып баста!";
+
+  document.getElementById("historyTopics").textContent =
+    completedCount;
+
+  document.getElementById("historyProblems").textContent =
+    solvedProblems.length;
+
+  document.getElementById("historyScore").textContent =
+    scoreValues.reduce((sum, value) => sum + value, 0);
+
+  const courseElements = {
+    kinematics: {
+      bar: "kinematicsProgressBar",
+      text: "kinematicsProgressText",
+      id: "kinematics"
+    },
+    dynamics: {
+      bar: "dynamicsProgressBar",
+      text: "dynamicsProgressText",
+      id: "dynamics"
+    },
+    statics: {
+      bar: "staticsProgressBar",
+      text: "staticsProgressText",
+      id: "statics"
+    }
+  };
+
+  Object.values(courseElements).forEach(config => {
+    const course = topicList.find(item => item.id === config.id);
+    const topics = course && Array.isArray(course.topics)
+      ? course.topics
+      : [];
+
+    const done = topics.filter(topic =>
+      completedTopics.includes(topic.id)
+    ).length;
+
+    const coursePercent = topics.length
+      ? Math.round(done / topics.length * 100)
+      : 0;
+
+    document.getElementById(config.bar).style.width =
+      `${coursePercent}%`;
+
+    document.getElementById(config.text).textContent =
+      `${done}/${topics.length} тақырып аяқталды`;
+  });
+
+  const badges = [
+    {
+      icon: "🌱",
+      title: "Алғашқы қадам",
+      description: "Бір тақырыпты аяқта",
+      unlocked: completedCount >= 1
+    },
+    {
+      icon: "📚",
+      title: "Білім жинаушы",
+      description: "5 тақырыпты аяқта",
+      unlocked: completedCount >= 5
+    },
+    {
+      icon: "🧠",
+      title: "Механика білгірі",
+      description: "10 тақырыпты аяқта",
+      unlocked: completedCount >= 10
+    },
+    {
+      icon: "🧮",
+      title: "Есеп шебері",
+      description: "5 есепті дұрыс шығар",
+      unlocked: solvedProblems.length >= 5
+    },
+    {
+      icon: "🎯",
+      title: "Тест жеңімпазы",
+      description: "Кемінде бір тест тапсыр",
+      unlocked: scoreValues.length > 0
+    },
+    {
+      icon: "🏆",
+      title: "Механика сарапшысы",
+      description: "Барлық тақырыпты аяқта",
+      unlocked: totalTopics > 0 && completedCount >= totalTopics
+    }
+  ];
+
+  document.getElementById("progressAchievements").textContent =
+    badges.filter(badge => badge.unlocked).length;
+
+  document.getElementById("progressBadges").innerHTML =
+    badges.map(badge => `
+      <div class="progress-badge ${badge.unlocked ? "" : "locked"}">
+        <div class="badge-icon">${badge.unlocked ? badge.icon : "🔒"}</div>
+        <h3>${badge.title}</h3>
+        <p>${badge.description}</p>
+        <p>${badge.unlocked ? "Ашылды ✓" : "Әлі ашылған жоқ"}</p>
+      </div>
+    `).join("");
+}
+
+document.addEventListener("DOMContentLoaded", refreshProgressPage);
+function toggleSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+  
+  sidebar.classList.toggle('open');
+  overlay.classList.toggle('open');
+}
+
+const mechanicsLabs = [
+  {
+    title: "Күш және қозғалыс",
+    goal: "Күштің дене қозғалысына әсерін зерттеу.",
+    purpose: "Теңәрекетті күш пен дененің қозғалысы арасындағы байланысты анықтау.",
+    theory: "Ньютонның екінші заңы: F = ma. Мұндағы F — теңәрекетті күш, m — масса, a — үдеу.",
+    url: "https://phet.colorado.edu/sims/html/forces-and-motion-basics/latest/forces-and-motion-basics_en.html",
+    steps: [
+      "Симуляцияны ашып, денеге әсер ететін күшті өзгертіңіз.",
+      "Күштердің теңескен және теңеспеген жағдайларын салыстырыңыз.",
+      "Дененің қозғалысындағы өзгерістерді бақылаңыз.",
+      "Нәтижелерді кестеге енгізіңіз."
+    ],
+    questions: [
+      {
+        text: "Теңәрекетті күш нөлге тең болса, қандай жағдай болуы мүмкін?",
+        options: [
+          "Дене міндетті түрде үдейді",
+          "Дене тыныштықта қалады немесе бірқалыпты қозғалады",
+          "Дене міндетті түрде тоқтайды"
+        ],
+        answer: 1
+      },
+      {
+        text: "Массасы тұрақты денеге әсер ететін күш артса, үдеу қалай өзгереді?",
+        options: ["Артады", "Азаяды", "Өзгермейді"],
+        answer: 0
+      }
+    ]
+  },
+  {
+    title: "Үйкеліс күші",
+    goal: "Үйкелістің дене қозғалысына әсерін зерттеу.",
+    purpose: "Үйкеліс күші мен қозғалыс сипатының байланысын бақылау.",
+    theory: "Үйкеліс күші жанасқан беттердің қозғалысына кедергі келтіреді. Оның шамасы беттердің қасиеттеріне және нормаль күшке тәуелді.",
+    url: "https://phet.colorado.edu/sims/html/friction/latest/friction_en.html",
+    steps: [
+      "Симуляцияны іске қосыңыз.",
+      "Денеге түсірілетін күшті өзгертіңіз.",
+      "Үйкеліс әсерінен қозғалыстың қалай өзгеретінін бақылаңыз.",
+      "Әртүрлі жағдайларды салыстырып, қорытынды жасаңыз."
+    ],
+    questions: [
+      {
+        text: "Үйкеліс күші әдетте қандай бағытта әсер етеді?",
+        options: [
+          "Қозғалысқа немесе салыстырмалы сырғанауға қарсы",
+          "Әрқашан жоғары",
+          "Әрқашан қозғалыс бағытымен"
+        ],
+        answer: 0
+      },
+      {
+        text: "Үйкеліс күші қандай энергияның жылуға айналуына әкелуі мүмкін?",
+        options: ["Ядролық", "Механикалық", "Жарық"],
+        answer: 1
+      }
+    ]
+  },
+  {
+    title: "Механикалық энергия",
+    goal: "Кинетикалық және потенциалдық энергиялардың өзгерісін зерттеу.",
+    purpose: "Механикалық энергияның бір түрден екінші түрге ауысуын бақылау.",
+    theory: "Кинетикалық энергия: Eₖ = mv²/2. Потенциалдық энергия: Eₚ = mgh. Ауаның кедергісі ескерілмесе, толық механикалық энергия сақталады.",
+    url: "https://phet.colorado.edu/sims/html/energy-skate-park/latest/energy-skate-park_en.html",
+    steps: [
+      "Саябақтағы қозғалыс моделін ашыңыз.",
+      "Денені әртүрлі биіктіктен жіберіңіз.",
+      "Кинетикалық және потенциалдық энергияның өзгерісін бақылаңыз.",
+      "Энергия диаграммасын салыстырыңыз."
+    ],
+    questions: [
+      {
+        text: "Дене төмен түскен кезде потенциалдық энергиясы қалай өзгереді?",
+        options: ["Артады", "Азаяды", "Әрқашан тұрақты"],
+        answer: 1
+      },
+      {
+        text: "Кинетикалық энергия қандай шамаларға тәуелді?",
+        options: [
+          "Тек биіктікке",
+          "Масса мен жылдамдыққа",
+          "Тек уақытқа"
+        ],
+        answer: 1
+      }
+    ]
+  },
+  {
+    title: "Маятник қозғалысы",
+    goal: "Маятниктің тербеліс периодына әсер ететін факторларды анықтау.",
+    purpose: "Маятник ұзындығы мен тербеліс периодының байланысын зерттеу.",
+    theory: "Кіші тербелістер үшін математикалық маятниктің периоды: T = 2π√(l/g).",
+    url: "https://phet.colorado.edu/sims/html/pendulum-lab/latest/pendulum-lab_en.html",
+    steps: [
+      "Маятниктің ұзындығын өзгертіңіз.",
+      "Бірнеше толық тербелісті бақылаңыз.",
+      "Тербеліс периодын салыстырыңыз.",
+      "Ұзындықтың периодқа әсері туралы қорытынды жасаңыз."
+    ],
+    questions: [
+      {
+        text: "Маятниктің ұзындығы артқанда периоды қалай өзгереді?",
+        options: ["Артады", "Азаяды", "Нөлге тең болады"],
+        answer: 0
+      },
+      {
+        text: "Период дегеніміз не?",
+        options: [
+          "Бір толық тербеліске кеткен уақыт",
+          "Дененің массасы",
+          "Дененің жүріп өткен жолы"
+        ],
+        answer: 0
+      }
+    ]
+  },
+  {
+    title: "Дененің лақтырыла қозғалысы",
+    goal: "Лақтырылған дененің траекториясы мен қозғалысын зерттеу.",
+    purpose: "Бастапқы жылдамдық пен лақтыру бұрышының ұшу траекториясына әсерін бақылау.",
+    theory: "Ауа кедергісі ескерілмегенде, горизонталь бағытта жылдамдық тұрақты, ал вертикаль бағытта денеге ауырлық күші әсер етеді.",
+    url: "https://phet.colorado.edu/sims/html/projectile-motion/latest/projectile-motion_en.html",
+    steps: [
+      "Бастапқы жылдамдықты орнатыңыз.",
+      "Лақтыру бұрышын өзгертіңіз.",
+      "Ұшу траекториясын және ұшу қашықтығын бақылаңыз.",
+      "Әртүрлі бұрыштардағы нәтижелерді салыстырыңыз."
+    ],
+    questions: [
+      {
+        text: "Ауа кедергісі ескерілмесе, горизонталь үдеу қандай?",
+        options: ["g-ге тең", "Нөлге тең", "Әрқашан 10 м/с²"],
+        answer: 1
+      },
+      {
+        text: "Лақтырылған дененің траекториясы қандай пішінде болады?",
+        options: ["Шеңбер", "Парабола", "Түзу сызық"],
+        answer: 1
+      }
+    ]
+  },
+  {
+    title: "Серпімділік күші",
+    goal: "Серпіннің созылуы мен серпімділік күшінің байланысын зерттеу.",
+    purpose: "Серпінге түсірілген күштің оның ұзаруына әсерін анықтау.",
+    theory: "Гук заңы: F = kx. Мұндағы k — серпімділік коэффициенті, x — серпіннің ұзаруы.",
+    url: "https://phet.colorado.edu/sims/html/hookes-law/latest/hookes-law_en.html",
+    steps: [
+      "Серпінге жүк іліңіз.",
+      "Жүктің массасын біртіндеп өзгертіңіз.",
+      "Серпіннің ұзаруын бақылаңыз.",
+      "Күш пен ұзарудың байланысын қорытындылаңыз."
+    ],
+    questions: [
+      {
+        text: "Гук заңы бойынша серпімділік күші неге тәуелді?",
+        options: [
+          "Серпіннің ұзаруына және қатаңдығына",
+          "Тек уақытқа",
+          "Тек дененің түсіне"
+        ],
+        answer: 0
+      },
+      {
+        text: "Серпіннің қатаңдық коэффициентінің өлшем бірлігі қандай?",
+        options: ["Н", "Н/м", "м/с"],
+        answer: 1
+      }
+    ]
+  }
+];
+
+let currentLab = 0;
+let completedLabs = new Set(pilotRead("physix_labs_done", []));
+let labScores = pilotRead("physix_labs_scores", {});
+
+function initMechanicsLabs() {
+  const section = document.getElementById("labs");
+  if (!section || section.dataset.initialized === "true") return;
+
+  section.dataset.initialized = "true";
+
+  const menu = document.getElementById("labMenu");
+  menu.innerHTML = mechanicsLabs.map((lab, i) => `
+    <button type="button"
+      class="lab-menu-btn"
+      data-lab-index="${i}"
+      onclick="selectMechanicsLab(${i})">
+      <span>${String(i + 1).padStart(2, "0")}</span>
+      ${lab.title}
+      <span class="lab-completed-mark"
+        id="labMark${i}"></span>
+    </button>
+  `).join("");
+
+  document.getElementById("labTotal").textContent =
+    mechanicsLabs.length;
+  completedLabs.forEach(i=>{const el=document.getElementById(`labMark${i}`);if(el)el.textContent='✓'});
+
+  selectMechanicsLab(0);
+  updateLabStats();
+}
+
+function selectMechanicsLab(index) {
+  const lab = mechanicsLabs[index];
+  if (!lab) return;
+
+  currentLab = index;
+
+  document.getElementById("labNumber").textContent =
+    `ЗЕРТХАНА ${String(index + 1).padStart(2, "0")}`;
+
+  document.getElementById("labTitle").textContent = lab.title;
+  document.getElementById("labGoal").textContent = lab.goal;
+  document.getElementById("labPurpose").textContent = lab.purpose;
+  document.getElementById("labTheory").textContent = lab.theory;
+
+  document.getElementById("labSteps").innerHTML =
+    lab.steps.map(step => `<li>${step}</li>`).join("");
+
+  document.getElementById("labFrame").src = lab.url;
+  document.getElementById("labOpenExternal").href = lab.url;
+
+  document.querySelectorAll("#labMenu .lab-menu-btn")
+    .forEach((button, i) => {
+      button.classList.toggle("active", i === index);
+    });
+
+  renderLabQuestions(lab);
+  renderLabRows(index);
+
+  document.getElementById("labConclusion").value =
+    labScores[index]?.conclusion || "";
+
+  document.getElementById("labFeedback").textContent = "";
+}
+
+function renderLabQuestions(lab) {
+  document.getElementById("labQuestions").innerHTML =
+    lab.questions.map((question, i) => `
+      <div class="lab-question">
+        <p>${i + 1}. ${question.text}</p>
+        ${question.options.map((option, j) => `
+          <label class="lab-option">
+            <input type="radio"
+              name="labQuestion${i}"
+              value="${j}">
+            ${option}
+          </label>
+        `).join("")}
+      </div>
+    `).join("");
+}
+
+function renderLabRows(index) {
+  const rows = labScores[index]?.rows || [
+    { parameter: "", result: "", conclusion: "" }
+  ];
+
+  document.getElementById("labResultRows").innerHTML =
+    rows.map((row, i) => `
+      <tr>
+        <td>${i + 1}</td>
+        <td>
+          <input aria-label="Параметр ${i + 1}"
+            value="${escapeLabValue(row.parameter)}"
+            oninput="updateLabCell(${index},${i},'parameter',this.value)">
+        </td>
+        <td>
+          <input aria-label="Нәтиже ${i + 1}"
+            value="${escapeLabValue(row.result)}"
+            oninput="updateLabCell(${index},${i},'result',this.value)">
+        </td>
+        <td>
+          <input aria-label="Қорытынды ${i + 1}"
+            value="${escapeLabValue(row.conclusion)}"
+            oninput="updateLabCell(${index},${i},'conclusion',this.value)">
+        </td>
+        <td>
+          <button type="button"
+            class="lab-remove-row"
+            aria-label="Жолды өшіру"
+            onclick="removeLabRow(${index},${i})">×</button>
+        </td>
+      </tr>
+    `).join("");
+}
+
+function escapeLabValue(value) {
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  })[char]);
+}
+
+function ensureLabData(index) {
+  if (!labScores[index]) {
+    labScores[index] = {
+      rows: [{ parameter: "", result: "", conclusion: "" }],
+      conclusion: "",
+      score: null
+    };
+  }
+
+  return labScores[index];
+}
+
+function updateLabCell(index, rowIndex, field, value) {
+  const data = ensureLabData(index);
+  data.rows[rowIndex][field] = value;
+  pilotSaveCurrent();
+}
+
+function addLabRow() {
+  const data = ensureLabData(currentLab);
+
+  data.rows.push({
+    parameter: "",
+    result: "",
+    conclusion: ""
+  });
+
+  renderLabRows(currentLab);
+  pilotSaveCurrent();
+}
+
+function removeLabRow(index, rowIndex) {
+  const data = ensureLabData(index);
+  if (data.rows.length <= 1) return;
+
+  data.rows.splice(rowIndex, 1);
+  renderLabRows(index);
+  pilotSaveCurrent();
+}
+
+function checkLabAnswers() {
+  const lab = mechanicsLabs[currentLab];
+  let correct = 0;
+  let answered = 0;
+
+  lab.questions.forEach((question, i) => {
+    const selected = document.querySelector(
+      `#labs input[name="labQuestion${i}"]:checked`
+    );
+
+    if (selected) {
+      answered++;
+      if (Number(selected.value) === question.answer) {
+        correct++;
+      }
+    }
+  });
+
+  const feedback = document.getElementById("labFeedback");
+
+  if (answered < lab.questions.length) {
+    feedback.className = "lab-error";
+    feedback.textContent =
+      `Барлық сұраққа жауап беріңіз. ` +
+      `${answered}/${lab.questions.length} жауап таңдалды.`;
+    return;
+  }
+
+  const score = Math.round(correct / lab.questions.length * 100);
+  ensureLabData(currentLab).score = score;
+  pilotSaveCurrent();
+
+  feedback.className = score >= 50 ? "lab-success" : "lab-error";
+  feedback.textContent =
+    `Нәтиже: ${correct}/${lab.questions.length}. ` +
+    `Дұрыстығы: ${score}%.`;
+
+  updateLabStats();
+}
+
+function completeLab() {
+  const data = ensureLabData(currentLab);
+  const conclusion =
+    document.getElementById("labConclusion").value.trim();
+
+  data.conclusion = conclusion;
+
+  if (!conclusion) {
+    const feedback = document.getElementById("labFeedback");
+    feedback.className = "lab-error";
+    feedback.textContent =
+      "Алдымен жалпы қорытындыңды жаз.";
+    document.getElementById("labConclusion").focus();
+    return;
+  }
+
+  if (data.score == null) {
+    const feedback = document.getElementById("labFeedback");
+    feedback.className = "lab-error";
+    feedback.textContent =
+      "Алдымен бақылау сұрақтарына жауап беріп, тексер.";
+    return;
+  }
+
+  if (completedLabs.has(currentLab)) {
+    document.getElementById("labFeedback").textContent =
+      "Бұл зертхана аяқталған деп белгіленген.";
+    return;
+  }
+
+  completedLabs.add(currentLab);
+  pilotSaveCurrent();
+
+  document.getElementById(`labMark${currentLab}`).textContent = "✓";
+  document.getElementById("labFeedback").className = "lab-success";
+  document.getElementById("labFeedback").textContent =
+    "Зертханалық жұмыс аяқталды! Нәтижеңіз осы ашық сессияда есептелді.";
+
+  updateLabStats();
+}
+
+function updateLabStats() {
+  document.getElementById("labCompleted").textContent =
+    completedLabs.size;
+
+  document.getElementById("labPercent").textContent =
+    Math.round(completedLabs.size / mechanicsLabs.length * 100) + "%";
+}
+
+/* Бөлім алғаш ашылғанда іске қосу */
+document.getElementById('labConclusion')?.addEventListener('input',e=>{ensureLabData(currentLab).conclusion=e.target.value;pilotSaveCurrent()});
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initMechanicsLabs);
+} else {
+  initMechanicsLabs();
+}
+
+
+// Құралдар бетінің интерактивті модельдері
+function showTool(name,button){document.querySelectorAll('#calculator .tool-panel').forEach(p=>p.hidden=true);const panel=document.getElementById('tool-'+name);if(panel)panel.hidden=false;document.querySelectorAll('.tool-card').forEach(b=>b.classList.remove('selected'));if(button)button.classList.add('selected');}
+let swElapsed=0,swStartedAt=0,swTimer=null,swLapCount=0;
+function swFormat(ms){let cs=Math.floor(ms/10)%100,sec=Math.floor(ms/1000)%60,min=Math.floor(ms/60000);return String(min).padStart(2,'0')+':'+String(sec).padStart(2,'0')+'.'+String(cs).padStart(2,'0')}
+function swTick(){document.getElementById('swDisplay').textContent=swFormat(swElapsed+performance.now()-swStartedAt)}
+function swStart(){if(swTimer)return;swStartedAt=performance.now();swTimer=setInterval(swTick,30)}
+function swPause(){if(!swTimer)return;swElapsed+=performance.now()-swStartedAt;clearInterval(swTimer);swTimer=null;document.getElementById('swDisplay').textContent=swFormat(swElapsed)}
+function swReset(){swPause();swElapsed=0;swLapCount=0;document.getElementById('swDisplay').textContent='00:00.00';document.getElementById('swLaps').innerHTML=''}
+function swLap(){if(!swTimer&&!swElapsed)return;swLapCount++;let li=document.createElement('li');li.textContent='Аралық '+swLapCount+': '+swFormat(swElapsed+(swTimer?performance.now()-swStartedAt:0));document.getElementById('swLaps').prepend(li)}
+function updateDynamometer(v){document.getElementById('forceValue').textContent=v;document.getElementById('springVisual').style.transform='scaleY('+(1+Number(v)/20)+')';document.getElementById('forceExplain').textContent='Күш: '+v+' Н. Күш артқан сайын серіппенің созылуы да артады.'}
+function updateBalance(){let l=Math.max(0,Number(document.getElementById('leftMass').value)||0),r=Math.max(0,Number(document.getElementById('rightMass').value)||0);document.getElementById('leftMassLabel').textContent=l+' г';document.getElementById('rightMassLabel').textContent=r+' г';let diff=Math.max(-12,Math.min(12,(l-r)/Math.max(1,l+r)*24));document.getElementById('balanceBeam').style.transform='rotate('+diff+'deg)';document.getElementById('balanceResult').textContent=l===r?'Таразы тепе-теңдікте.':(l>r?'Сол жақ табақша ауыр.':'Оң жақ табақша ауыр.')}
+function updatePress(){let a=Number(document.getElementById('area1').value),b=Number(document.getElementById('area2').value),f=Number(document.getElementById('force1').value);if(a<=0||b<=0||f<0){document.getElementById('pressResult').textContent='Аудандар нөлден үлкен болуы керек.';return}let out=f*b/a;document.getElementById('pressResult').textContent='Үлкен поршеньдегі күш: '+Number(out.toFixed(2))+' Н';document.getElementById('pressExplanation').textContent='F₂ = F₁ × S₂ / S₁. Қысым бірдей берілгенде күш аудандардың қатынасына сай өзгереді.'}
+function updateProtractor(v){document.getElementById('angleValue').textContent=v;document.getElementById('protractorNeedle').style.transform='rotate('+(-Number(v))+'deg)';document.getElementById('angleExplain').textContent='Өлшенетін бұрыш: '+v+'°'}
+
+</script>
+</body>
+</html>
